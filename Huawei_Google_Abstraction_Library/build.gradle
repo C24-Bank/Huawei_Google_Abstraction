@@ -23,6 +23,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "operatingSystem"
+    productFlavors {
+        google {
+            dimension "operatingSystem"
+            applicationIdSuffix ".google"
+        }
+        huawei {
+            dimension "operatingSystem"
+            applicationIdSuffix ".huawei"
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

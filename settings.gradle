@@ -1,0 +1,3 @@
+include ':Huawei_Google_Abstraction'
+include ':app'
+rootProject.name = "Huawei_Google_Abstraction"

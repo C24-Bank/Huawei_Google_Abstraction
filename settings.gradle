@@ -1,3 +1,4 @@
+include ':core-services'
 include ':Huawei_Google_Abstraction_Library'
 include ':app'
 rootProject.name = "Huawei_Google_Abstraction"

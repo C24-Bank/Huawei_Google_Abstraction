@@ -1,3 +1,5 @@
+include ':google-mlkit'
+include ':huawei-mlkit'
 include ':core-services'
 include ':Huawei_Google_Abstraction_Library'
 include ':app'

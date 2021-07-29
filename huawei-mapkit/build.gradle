@@ -1,12 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-}
-
-rootProject.allprojects {
-    repositories {
-        maven { url 'https://developer.huawei.com/repo/' }
-    }
+    id 'com.huawei.agconnect'
 }
 
 android {

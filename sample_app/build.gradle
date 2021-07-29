@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -17,10 +18,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    flavorDimensions "iOS"
+    productFlavors{
+        huawei{
+            dimension "iOS"
+            applicationIdSuffix ".huawei"
+            versionName "1.0-huawei"
+        }
+        google{
+            dimension "iOS"
+            applicationIdSuffix ".google"
+            versionName "1.0-google"
         }
     }
     compileOptions {
@@ -30,6 +38,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+}
+
+configurations{
+    huaweiDebugCompile
+    googleDebugCompile
 }
 
 dependencies {
@@ -42,4 +55,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    huaweiCompile 'com.huawei.hms:scan:2.0.0.300'
+    huaweiCompile 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+
+    googleCompile 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0'
 }
+
+apply plugin: 'com.huawei.agconnect'

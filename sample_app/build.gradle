@@ -18,15 +18,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions "iOS"
+    flavorDimensions "OS"
     productFlavors{
         huawei{
-            dimension "iOS"
+            dimension "OS"
             applicationIdSuffix ".huawei"
             versionName "1.0-huawei"
         }
         google{
-            dimension "iOS"
+            dimension "OS"
             applicationIdSuffix ".google"
             versionName "1.0-google"
         }
@@ -60,6 +60,12 @@ dependencies {
     huaweiCompile 'com.huawei.agconnect:agconnect-core:1.5.2.300'
 
     googleCompile 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0'
+    googleCompile 'com.google.mlkit:barcode-scanning:16.2.0'
+
+    def camerax_version = "1.0.0"
+    googleCompile "androidx.camera:camera-camera2:$camerax_version"
+    googleCompile "androidx.camera:camera-lifecycle:$camerax_version"
+    googleCompile "androidx.camera:camera-view:1.0.0-alpha24"
 }
 
-apply plugin: 'com.huawei.agconnect'
+//apply plugin: 'com.huawei.agconnect'

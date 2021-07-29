@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">sample_app</string>
+    <string name="overview_title">Google Service ML Kit</string>
+    <string name="button_text">Google Scan</string>
+</resources>

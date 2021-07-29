@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">sample_app</string>
+    <string name="overview_title">Huawei Service Scan Kit</string>
+    <string name="button_text">Huawei Custom Scan</string>
+</resources>

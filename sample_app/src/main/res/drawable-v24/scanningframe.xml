@@ -7,7 +7,7 @@
     <!-- 设置框内的填充色  -->
     <solid android:color="#1f00BCD4"/>
     <!-- 设置圆角 -->
-    <corners android:radius="5dip"/>
+    <corners android:radius="20dip"/>
     <!-- 设置内边距 -->
     <padding
         android:left="2dp"

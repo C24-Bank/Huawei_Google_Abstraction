@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/core-services" />
             <option value="$PROJECT_DIR$/google-mlkit" />
             <option value="$PROJECT_DIR$/huawei-mlkit" />
+            <option value="$PROJECT_DIR$/sample_app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

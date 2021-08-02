@@ -23,6 +23,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "OS"
+    productFlavors{
+        huawei{
+            dimension "OS"
+            versionName "1.0-huawei"
+        }
+        google{
+            dimension "OS"
+            versionName "1.0-google"
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -41,4 +52,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    googleCompile project(':google-mlkit')
+    huaweiCompile project(':huawei-scankit')
 }
+apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'com.huawei.agconnect'

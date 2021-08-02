@@ -1,11 +1,11 @@
-package com.example.sample_app
+package de.c24.hg_abstraction
 
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -23,8 +23,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import kotlinx.android.synthetic.google.activity_scan.*
-import java.io.File
+import kotlinx.android.synthetic.main.activity_scan.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -34,13 +33,13 @@ class ScanActivity: AppCompatActivity() {
         private const val TAG = "CameraXBasic"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
+        val SCAN_RESULT = "scanResult"
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,11 +116,15 @@ class ScanActivity: AppCompatActivity() {
             .setImageQueueDepth(30)
             .build()
 
-        val qrCodeAnalyzer = YourImageAnalyzer(this,barcodeScanner) { qrCodes ->
+        val qrCodeAnalyzer = YourImageAnalyzer(barcodeScanner) { qrCodes ->
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
-                Toast.makeText(this,qrToken,Toast.LENGTH_SHORT).show()
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
+                val intent = Intent()
+                intent.apply {
+                    putExtra(SCAN_RESULT, qrToken) }
+                setResult(Activity.RESULT_OK, intent)
+                this.finish()
 
             }
         }
@@ -156,7 +159,6 @@ class ScanActivity: AppCompatActivity() {
 
 
     private class YourImageAnalyzer(
-        context: Context,
         barcodeScanner: BarcodeScanner,
         private val onQrCodesDetected: (qrCodes: List<Barcode>) -> Unit
     ) : ImageAnalysis.Analyzer {

@@ -1,3 +1,4 @@
+include ':huawei-scankit'
 include ':sample_app'
 include ':google-mlkit'
 include ':huawei-mlkit'

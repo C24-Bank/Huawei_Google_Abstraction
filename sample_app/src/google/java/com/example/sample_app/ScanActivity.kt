@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -36,20 +37,19 @@ class ScanActivity: AppCompatActivity() {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
-
-    private lateinit var analyzer: YourImageAnalyzer
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var barcodeScanner: BarcodeScanner
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
-        startCamera()
     }
 
     override fun onStart() {
         super.onStart()
+        initBarCodeScanner()
         requestCameraPermission(this)
     }
 
@@ -93,18 +93,43 @@ class ScanActivity: AppCompatActivity() {
         cameraProvider.unbindAll()
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
-        var imageAnalysis = ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-        analyzer = YourImageAnalyzer(this)
-        imageAnalysis.setAnalyzer(cameraExecutor,analyzer)
 
-        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, imageAnalysis)
+        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun initBarCodeScanner() {
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
+            .build()
+
+        barcodeScanner = BarcodeScanning.getClient(options)
+    }
+
+    private fun setupAnalyzer(): ImageAnalysis {
+        val imageAnalysis = ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setImageQueueDepth(30)
+            .build()
+
+        val qrCodeAnalyzer = YourImageAnalyzer(this,barcodeScanner) { qrCodes ->
+            qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
+                Toast.makeText(this,qrToken,Toast.LENGTH_SHORT).show()
+                cameraExecutor?.shutdown()
+                cameraProviderFuture?.get()?.unbindAll()
+
+            }
+        }
+
+        cameraExecutor?.let {
+            imageAnalysis.setAnalyzer(it, qrCodeAnalyzer)
+        }
+
+        return imageAnalysis
     }
 
     override fun onRequestPermissionsResult(
@@ -129,68 +154,29 @@ class ScanActivity: AppCompatActivity() {
     }
 
 
-    private class YourImageAnalyzer(context: Context) : ImageAnalysis.Analyzer {
+    private class YourImageAnalyzer(
+        context: Context,
+        barcodeScanner: BarcodeScanner,
+        private val onQrCodesDetected: (qrCodes: List<Barcode>) -> Unit
+    ) : ImageAnalysis.Analyzer {
         val context = context
+        val barCodeScanner = barcodeScanner
+        
+        override fun analyze(imageProxy: ImageProxy) {
+            imageProxy.image?.let { inputImage ->
+                val processingImage = InputImage.fromMediaImage(
+                    inputImage,
+                    imageProxy.imageInfo.rotationDegrees
+                )
 
-        private fun scanBarcodes(image: InputImage) {
-            // [START set_detector_options]
-            val options = BarcodeScannerOptions.Builder()
-                    .setBarcodeFormats(
-                            Barcode.FORMAT_QR_CODE,
-                            Barcode.FORMAT_AZTEC)
-                    .build()
-            // [END set_detector_options]
-
-            // [START get_detector]
-            val scanner = BarcodeScanning.getClient()
-            // Or, to specify the formats to recognize:
-            // val scanner = BarcodeScanning.getClient(options)
-            // [END get_detector]
-
-            // [START run_detector]
-            val result = scanner.process(image)
-                    .addOnSuccessListener { barcodes ->
-                        // Task completed successfully
-                        // [START_EXCLUDE]
-                        // [START get_barcodes]
-                        for (barcode in barcodes) {
-                            val bounds = barcode.boundingBox
-                            val corners = barcode.cornerPoints
-
-                            val rawValue = barcode.rawValue
-
-                            val valueType = barcode.valueType
-                            // See API reference for complete list of supported types
-                            when (valueType) {
-                                Barcode.TYPE_WIFI -> {
-                                    val ssid = barcode.wifi!!.ssid
-                                    val password = barcode.wifi!!.password
-                                    val type = barcode.wifi!!.encryptionType
-                                    Toast.makeText(context,ssid,Toast.LENGTH_SHORT).show()
-                                }
-                                Barcode.TYPE_URL -> {
-                                    val title: CharSequence = barcode.url!!.title
-                                    val url = barcode.url!!.url
-                                    Toast.makeText(context,title,Toast.LENGTH_SHORT).show()
-                                    Toast.makeText(context,url,Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-                        // [END get_barcodes]
-                        // [END_EXCLUDE]
+                barCodeScanner.process(processingImage)
+                    .addOnSuccessListener {
+                        imageProxy.close()
+                        onQrCodesDetected.invoke(it)
                     }
                     .addOnFailureListener {
-                        // Task failed with an exception
-                        // ...
+                        imageProxy.close()
                     }
-            // [END run_detector]
-        }
-
-        override fun analyze(imageProxy: ImageProxy) {
-            val mediaImage = imageProxy.image
-            if (mediaImage != null) {
-                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                scanBarcodes(image)
             }
         }
     }

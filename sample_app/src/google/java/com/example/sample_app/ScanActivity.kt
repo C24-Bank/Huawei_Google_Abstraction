@@ -2,10 +2,12 @@ package com.example.sample_app
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -25,7 +27,7 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ScanActivity: Activity() {
+class ScanActivity: AppCompatActivity() {
 
     companion object {
         private const val TAG = "CameraXBasic"
@@ -35,6 +37,7 @@ class ScanActivity: Activity() {
     }
 
 
+    private lateinit var analyzer: YourImageAnalyzer
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
 
@@ -45,24 +48,41 @@ class ScanActivity: Activity() {
         startCamera()
     }
 
+    override fun onStart() {
+        super.onStart()
+        requestCameraPermission(this)
+    }
+
+    private fun requestCameraPermission(context: Context){
+        val cameraPermissionResult = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA
+        )
+        if (cameraPermissionResult == PackageManager.PERMISSION_GRANTED) {
+            startCamera()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
     private fun startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        val cameraProvider = cameraProviderFuture.get()
+        cameraProviderFuture.addListener({
 
-        cameraProviderFuture.addListener(Runnable {
-            if (allPermissionsGranted()) {
-                bindPreview(cameraProvider)
-            } else {
-                ActivityCompat.requestPermissions(
-                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-            }
+            val cameraProvider = cameraProviderFuture.get()
+            bindPreview(cameraProvider)
         }, ContextCompat.getMainExecutor(this))
 
     }
 
     private fun bindPreview(cameraProvider : ProcessCameraProvider) {
+
         var preview : Preview = Preview.Builder()
             .build()
 
@@ -70,9 +90,16 @@ class ScanActivity: Activity() {
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
-        preview.setSurfaceProvider(previewview.surfaceProvider)
+        cameraProvider.unbindAll()
 
-        var camera = cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
+        preview.setSurfaceProvider(previewview.surfaceProvider)
+        var imageAnalysis = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+        analyzer = YourImageAnalyzer(this)
+        imageAnalysis.setAnalyzer(cameraExecutor,analyzer)
+
+        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, imageAnalysis)
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -83,6 +110,7 @@ class ScanActivity: Activity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
@@ -101,63 +129,68 @@ class ScanActivity: Activity() {
     }
 
 
-    private fun scanBarcodes(image: InputImage) {
-        // [START set_detector_options]
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
-                Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_AZTEC)
-            .build()
-        // [END set_detector_options]
+    private class YourImageAnalyzer(context: Context) : ImageAnalysis.Analyzer {
+        val context = context
 
-        // [START get_detector]
-        val scanner = BarcodeScanning.getClient()
-        // Or, to specify the formats to recognize:
-        // val scanner = BarcodeScanning.getClient(options)
-        // [END get_detector]
+        private fun scanBarcodes(image: InputImage) {
+            // [START set_detector_options]
+            val options = BarcodeScannerOptions.Builder()
+                    .setBarcodeFormats(
+                            Barcode.FORMAT_QR_CODE,
+                            Barcode.FORMAT_AZTEC)
+                    .build()
+            // [END set_detector_options]
 
-        // [START run_detector]
-        val result = scanner.process(image)
-            .addOnSuccessListener { barcodes ->
-                // Task completed successfully
-                // [START_EXCLUDE]
-                // [START get_barcodes]
-                for (barcode in barcodes) {
-                    val bounds = barcode.boundingBox
-                    val corners = barcode.cornerPoints
+            // [START get_detector]
+            val scanner = BarcodeScanning.getClient()
+            // Or, to specify the formats to recognize:
+            // val scanner = BarcodeScanning.getClient(options)
+            // [END get_detector]
 
-                    val rawValue = barcode.rawValue
+            // [START run_detector]
+            val result = scanner.process(image)
+                    .addOnSuccessListener { barcodes ->
+                        // Task completed successfully
+                        // [START_EXCLUDE]
+                        // [START get_barcodes]
+                        for (barcode in barcodes) {
+                            val bounds = barcode.boundingBox
+                            val corners = barcode.cornerPoints
 
-                    val valueType = barcode.valueType
-                    // See API reference for complete list of supported types
-                    when (valueType) {
-                        Barcode.TYPE_WIFI -> {
-                            val ssid = barcode.wifi!!.ssid
-                            val password = barcode.wifi!!.password
-                            val type = barcode.wifi!!.encryptionType
+                            val rawValue = barcode.rawValue
+
+                            val valueType = barcode.valueType
+                            // See API reference for complete list of supported types
+                            when (valueType) {
+                                Barcode.TYPE_WIFI -> {
+                                    val ssid = barcode.wifi!!.ssid
+                                    val password = barcode.wifi!!.password
+                                    val type = barcode.wifi!!.encryptionType
+                                    Toast.makeText(context,ssid,Toast.LENGTH_SHORT).show()
+                                }
+                                Barcode.TYPE_URL -> {
+                                    val title: CharSequence = barcode.url!!.title
+                                    val url = barcode.url!!.url
+                                    Toast.makeText(context,title,Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context,url,Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                        Barcode.TYPE_URL -> {
-                            val title = barcode.url!!.title
-                            val url = barcode.url!!.url
-                        }
+                        // [END get_barcodes]
+                        // [END_EXCLUDE]
                     }
-                }
-                // [END get_barcodes]
-                // [END_EXCLUDE]
-            }
-            .addOnFailureListener {
-                // Task failed with an exception
-                // ...
-            }
-        // [END run_detector]
-    }
-
-    private class YourImageAnalyzer : ImageAnalysis.Analyzer {
+                    .addOnFailureListener {
+                        // Task failed with an exception
+                        // ...
+                    }
+            // [END run_detector]
+        }
 
         override fun analyze(imageProxy: ImageProxy) {
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
                 val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                scanBarcodes(image)
             }
         }
     }

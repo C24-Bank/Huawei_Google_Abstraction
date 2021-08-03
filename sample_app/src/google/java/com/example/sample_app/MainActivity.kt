@@ -1,16 +1,20 @@
 package com.example.sample_app
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import de.c24.hg_abstraction.ScanActivity
 import de.c24.hg_abstraction.ScannerHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = "MainActivity"
@@ -26,7 +30,8 @@ class MainActivity : Activity() {
             navigateToActivityScan()
         }
         servicebutton?.setOnClickListener {
-            ScannerHelper.startScanActivity(this,REQUEST_CODE_SCAN)
+            val list = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, list, DEFINED_CODE)
         }
     }
 
@@ -34,6 +39,17 @@ class MainActivity : Activity() {
     private fun navigateToActivityScan() {
         this.startActivityForResult(
             Intent(this, DefinedActivity::class.java), REQUEST_CODE_SCAN)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.size < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        else if (requestCode == DEFINED_CODE) {
+            //start your activity for scanning barcode
+            ScannerHelper.startScanActivity(this,REQUEST_CODE_SCAN)
+        }
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

@@ -50,25 +50,9 @@ class ScanActivity: AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         initBarCodeScanner()
-        requestCameraPermission(this)
+        startCamera()
     }
-
-    private fun requestCameraPermission(context: Context){
-        val cameraPermissionResult = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
-        )
-        if (cameraPermissionResult == PackageManager.PERMISSION_GRANTED) {
-            startCamera()
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
-    }
-
+    
     private fun startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)

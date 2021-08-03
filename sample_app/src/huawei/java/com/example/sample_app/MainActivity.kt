@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.huawei.hms.ml.scan.HmsScan
+import de.c24.hg_abstraction.ScannerHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -30,12 +31,19 @@ class MainActivity : AppCompatActivity() {
         {
             newViewBtnClick()
         }
+        servicebutton?.setOnClickListener {
+            serviceBtnClick()
+        }
     }
 
     private fun newViewBtnClick() {
         // Initialize a list of required permissions to request runtime
         val list = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
         ActivityCompat.requestPermissions(this, list, DEFINED_CODE)
+    }
+
+    private fun serviceBtnClick() {
+        ScannerHelper.startScanActivity(this,REQUEST_CODE_SCAN)
     }
 
 

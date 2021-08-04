@@ -1,6 +1,7 @@
 package de.c24.hg_abstraction
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -39,13 +40,14 @@ class ScanView@JvmOverloads constructor(
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
+    var resultListener: ((String) -> Unit)? = null
 
     init {
         initBarCodeScanner()
         startCamera()
     }
 
-    private fun startCamera() {
+    private fun startCamera(activity: Activity) {
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
@@ -91,6 +93,7 @@ class ScanView@JvmOverloads constructor(
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
+                resultListener?.invoke(qrToken)
 
             }
         }
@@ -102,11 +105,13 @@ class ScanView@JvmOverloads constructor(
         return imageAnalysis
     }
 
-
      fun destroyView() {
         cameraExecutor.shutdown()
      }
 
+    fun setResultListener(){
+
+    }
 
     private class YourImageAnalyzer(
         barcodeScanner: BarcodeScanner,

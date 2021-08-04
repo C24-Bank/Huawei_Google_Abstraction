@@ -34,21 +34,6 @@ class ScanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
-        val list = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
-        ActivityCompat.requestPermissions(this, list, DEFINED_CODE)
-
-    }
-
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.size < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-        else if (requestCode == DEFINED_CODE) {
-            //start your activity for scanning barcode
-            startCamera()
-        }
     }
 
     private fun startCamera(){
@@ -90,6 +75,7 @@ class ScanActivity : AppCompatActivity() {
     //manage remoteView lifecycle
     override fun onStart() {
         super.onStart()
+        startCamera()
         remoteView?.onStart()
     }
 

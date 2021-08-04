@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import de.c24.hg_abstraction.ScanActivity
 import de.c24.hg_abstraction.ScannerHelper
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private val TAG = "MainActivity"
         private val DEFINED_CODE = 222
         private val REQUEST_CODE_SCAN = 0X01
     }
@@ -41,14 +41,25 @@ class MainActivity : AppCompatActivity() {
             Intent(this, DefinedActivity::class.java), REQUEST_CODE_SCAN)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    private fun allPermissionsGranted(permissions: Array<out String>) = permissions.all {
+        ContextCompat.checkSelfPermission(
+            baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.size < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-        else if (requestCode == DEFINED_CODE) {
-            //start your activity for scanning barcode
-            ScannerHelper.startScanActivity(this,REQUEST_CODE_SCAN)
+        if (requestCode == DEFINED_CODE) {
+            if (allPermissionsGranted(permissions)) {
+                //start your activity for scanning barcode
+                ScannerHelper.startScanActivity(this,REQUEST_CODE_SCAN)
+            } else {
+                Toast.makeText(this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
     }
 

@@ -1,20 +1,15 @@
 package de.c24.hg_abstraction
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.util.AttributeSet
+import android.view.LayoutInflater
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
@@ -23,41 +18,42 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import de.c24.hg_abstraction.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.*
+import kotlinx.android.synthetic.main.activity_scan.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ScanActivity: AppCompatActivity() {
+class ScanView@JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    companion object {
-        val SCAN_RESULT = "scanResult"
-    }
+    private val binding = ScanViewBinding.inflate(
+        LayoutInflater.from(context),
+        this,
+        true
+    )
 
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scan)
-    }
-
-    override fun onStart() {
-        super.onStart()
+    init {
         initBarCodeScanner()
         startCamera()
     }
 
     private fun startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor()
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
 
             val cameraProvider = cameraProviderFuture.get()
             bindPreview(cameraProvider)
-        }, ContextCompat.getMainExecutor(this))
+        }, ContextCompat.getMainExecutor(context))
 
     }
 
@@ -77,7 +73,6 @@ class ScanActivity: AppCompatActivity() {
         cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
     }
 
-
     private fun initBarCodeScanner() {
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
@@ -96,11 +91,6 @@ class ScanActivity: AppCompatActivity() {
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
-                val intent = Intent()
-                intent.apply {
-                    putExtra(SCAN_RESULT, qrToken) }
-                setResult(Activity.RESULT_OK, intent)
-                this.finish()
 
             }
         }
@@ -112,10 +102,10 @@ class ScanActivity: AppCompatActivity() {
         return imageAnalysis
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+
+     fun destroyView() {
         cameraExecutor.shutdown()
-    }
+     }
 
 
     private class YourImageAnalyzer(
@@ -142,5 +132,6 @@ class ScanActivity: AppCompatActivity() {
             }
         }
     }
+
 
 }

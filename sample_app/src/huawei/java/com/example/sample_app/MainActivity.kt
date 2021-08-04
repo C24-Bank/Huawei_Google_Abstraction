@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
         else if (requestCode == REQUEST_CODE_SCAN) {
             // Obtain the return value of HmsScan from the value returned by the onActivityResult method by using ScanUtil.RESULT as the key value.
-            val hmsScan: HmsScan? = data.getParcelableExtra(DefinedActivity.SCAN_RESULT)
-            if (!TextUtils.isEmpty(hmsScan?.getOriginalValue()))
-                Toast.makeText(this, hmsScan?.getOriginalValue(), Toast.LENGTH_SHORT).show()
+            val result = data.getCharSequenceExtra(DefinedActivity.SCAN_RESULT)
+            if (!TextUtils.isEmpty(result))
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -73,9 +73,10 @@ class ScanActivity : AppCompatActivity() {
         remoteView?.onCreate(null)
         remoteView?.setOnResultCallback { result ->
             if (result != null && result.size > 0 && result[0] != null && !TextUtils.isEmpty(result[0].getOriginalValue())) {
+                val hmsScanResult: HmsScan = result[0]
                 val intent = Intent()
                 intent.apply {
-                    putExtra(SCAN_RESULT, result[0]) }
+                    putExtra(SCAN_RESULT, hmsScanResult.getOriginalValue()) }
                 setResult(Activity.RESULT_OK, intent)
                 this.finish()
             }

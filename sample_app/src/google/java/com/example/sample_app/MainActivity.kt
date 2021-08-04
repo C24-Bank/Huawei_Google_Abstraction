@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToActivityScan() {
         this.startActivityForResult(
-            Intent(this, DefinedActivity::class.java), REQUEST_CODE_SCAN)
+            Intent(this, ScaniActivity::class.java), REQUEST_CODE_SCAN)
     }
 
     private fun allPermissionsGranted(permissions: Array<out String>) = permissions.all {

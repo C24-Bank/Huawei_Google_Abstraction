@@ -44,22 +44,21 @@ class ScanView@JvmOverloads constructor(
 
     init {
         initBarCodeScanner()
-        startCamera()
     }
 
-    private fun startCamera(activity: Activity) {
+     fun startCamera(activity: Activity) {
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
 
             val cameraProvider = cameraProviderFuture.get()
-            bindPreview(cameraProvider)
+            bindPreview(activity,cameraProvider)
         }, ContextCompat.getMainExecutor(context))
 
     }
 
-    private fun bindPreview(cameraProvider : ProcessCameraProvider) {
+    private fun bindPreview(activity: Activity,cameraProvider : ProcessCameraProvider) {
 
         var preview : Preview = Preview.Builder()
             .build()
@@ -72,7 +71,7 @@ class ScanView@JvmOverloads constructor(
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
 
-        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
+        cameraProvider.bindToLifecycle(activity as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
     }
 
     private fun initBarCodeScanner() {

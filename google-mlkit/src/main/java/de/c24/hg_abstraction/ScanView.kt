@@ -1,6 +1,5 @@
 package de.c24.hg_abstraction
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
@@ -38,10 +37,11 @@ class ScanView@JvmOverloads constructor(
         true
     )
 
+    override var resultListener: ((String) -> Unit)? = null
+
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
-    var resultListener: ((String) -> Unit)? = null
 
 
      override fun startCamera(activity: Activity) {

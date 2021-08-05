@@ -1,19 +1,14 @@
 package de.c24.hg_abstraction
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Rect
-import android.os.Bundle
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import com.huawei.hms.hmsscankit.RemoteView
 import com.huawei.hms.ml.scan.HmsScan
 import de.c24.hg_abstraction.core_scan.ScanViewCore
@@ -31,7 +26,7 @@ class ScanView@JvmOverloads constructor(
         true
     )
 
-    var resultListener: ((String) -> Unit)? = null
+    override var resultListener: ((String) -> Unit)? = null
 
     companion object
     {

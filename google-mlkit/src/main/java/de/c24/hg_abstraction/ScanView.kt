@@ -19,6 +19,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import de.c24.hg_abstraction.core_scan.ScanViewCore
 import de.c24.hg_abstraction.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.*
 import kotlinx.android.synthetic.main.activity_scan.view.*
@@ -29,7 +30,7 @@ class ScanView@JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr), ScanViewCore {
 
     private val binding = ScanViewBinding.inflate(
         LayoutInflater.from(context),
@@ -43,7 +44,7 @@ class ScanView@JvmOverloads constructor(
     var resultListener: ((String) -> Unit)? = null
 
 
-     fun startCamera(activity: Activity) {
+     override fun startCamera(activity: Activity) {
          initBarCodeScanner()
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -102,7 +103,7 @@ class ScanView@JvmOverloads constructor(
         return imageAnalysis
     }
 
-     fun destroyView() {
+     override fun destroyView() {
         cameraExecutor.shutdown()
      }
 

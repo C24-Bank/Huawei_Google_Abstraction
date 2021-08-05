@@ -16,13 +16,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.huawei.hms.hmsscankit.RemoteView
 import com.huawei.hms.ml.scan.HmsScan
+import de.c24.hg_abstraction.core_scan.ScanViewCore
 import de.c24.hg_abstraction.databinding.ScanViewBinding
 
 class ScanView@JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr), ScanViewCore {
 
     private val binding = ScanViewBinding.inflate(
         LayoutInflater.from(context),
@@ -44,7 +45,7 @@ class ScanView@JvmOverloads constructor(
 
     }
 
-     fun startCamera(activity: Activity){
+     override fun startCamera(activity: Activity){
         //1.get screen density to caculate viewfinder's rect
         val dm = resources.displayMetrics
         //2.get screen size
@@ -76,7 +77,7 @@ class ScanView@JvmOverloads constructor(
         frameLayout.addView(remoteView, params)
     }
 
-    fun destroyView(){
+    override fun destroyView(){
         remoteView?.onDestroy()
     }
 }

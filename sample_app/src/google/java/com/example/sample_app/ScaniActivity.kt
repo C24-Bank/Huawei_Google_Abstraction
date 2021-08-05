@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.sample_app.databinding.ActivityScaniBinding
+import kotlinx.android.synthetic.main.activity_scani.*
 
 class ScaniActivity :AppCompatActivity(){
 
@@ -15,12 +15,9 @@ class ScaniActivity :AppCompatActivity(){
         private val DEFINED_CODE = 222
     }
 
-    private lateinit var binding: ActivityScaniBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityScaniBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_scani)
         val list = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
         ActivityCompat.requestPermissions(this, list, ScaniActivity.DEFINED_CODE)
 
@@ -39,8 +36,8 @@ class ScaniActivity :AppCompatActivity(){
         if (requestCode == ScaniActivity.DEFINED_CODE) {
             if (allPermissionsGranted(permissions)) {
                 //start your activity for scanning barcode
-                binding.scanView.startCamera(this)
-                binding.scanView.resultListener = { result ->
+                scanView.startCamera(this)
+                scanView.resultListener = { result ->
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show()
                 }
             } else {
@@ -54,7 +51,7 @@ class ScaniActivity :AppCompatActivity(){
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.scanView.destroyView()
+        scanView.destroyView()
     }
 
 }

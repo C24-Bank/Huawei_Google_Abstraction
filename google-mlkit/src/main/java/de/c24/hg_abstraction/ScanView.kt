@@ -42,11 +42,9 @@ class ScanView@JvmOverloads constructor(
     private lateinit var barcodeScanner: BarcodeScanner
     var resultListener: ((String) -> Unit)? = null
 
-    init {
-        initBarCodeScanner()
-    }
 
      fun startCamera(activity: Activity) {
+         initBarCodeScanner()
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
@@ -107,10 +105,6 @@ class ScanView@JvmOverloads constructor(
      fun destroyView() {
         cameraExecutor.shutdown()
      }
-
-    fun setResultListener(){
-
-    }
 
     private class YourImageAnalyzer(
         barcodeScanner: BarcodeScanner,

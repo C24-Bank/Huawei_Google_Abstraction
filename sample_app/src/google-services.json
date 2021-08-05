@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "843874235346",
+    "project_id": "huawei--abstraction",
+    "storage_bucket": "huawei--abstraction.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843874235346:android:a5effda529a49df8e90e0b",
+        "android_client_info": {
+          "package_name": "com.example.sample_app.google"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843874235346-k3ed7qfg90hdi015cmlvt6slce8d6dmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbsFBOc8afImxFIvyuJgZKcN5BVVQVU_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843874235346-k3ed7qfg90hdi015cmlvt6slce8d6dmg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

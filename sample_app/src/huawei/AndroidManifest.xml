@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Huawei_Google_Abstraction">
         <activity android:name=".DefinedActivity"></activity>
+        <activity android:name=".ScaniActivity"></activity>
         <activity android:name="de.c24.hg_abstraction.ScanActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>

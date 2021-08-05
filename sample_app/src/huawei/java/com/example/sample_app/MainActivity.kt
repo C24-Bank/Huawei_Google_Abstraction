@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         else if (requestCode == DEFINED_CODE) {
             //start your activity for scanning barcode
             this.startActivityForResult(
-                Intent(this, DefinedActivity::class.java), REQUEST_CODE_SCAN)
+                Intent(this, ScaniActivity::class.java), REQUEST_CODE_SCAN)
         }
     }
 

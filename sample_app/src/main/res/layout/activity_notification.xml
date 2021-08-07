@@ -2,34 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center|center_horizontal|center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
     android:orientation="vertical">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/overview_title"
+        android:text="Notification"
         android:textSize="30dp"
         />
     <Button
-        android:id="@+id/button"
+        android:id="@+id/logTokenButton"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:textAllCaps="false"
-        android:text="@string/button_text" />
+        android:text="Log Token" />
 
     <Button
-        android:id="@+id/servicebutton"
+        android:id="@+id/subscribeButton"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:textAllCaps="false"
-        android:text="@string/button_text_service" />
+        android:text="Subscribe" />
 
-    <Button
-        android:id="@+id/notificationbutton"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:textAllCaps="false"
-        android:text="@string/button_text_notification" />
 
 </LinearLayout>

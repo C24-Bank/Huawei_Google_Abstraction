@@ -55,16 +55,17 @@ class PushNotificationService:FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Log.e("Notification", "Created in up to orio OS device");
             notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setOngoing(true)
-                .setSmallIcon(getNotificationIcon())
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pi)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .setWhen(System.currentTimeMillis())
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentTitle(title).build()
+                    .setColor(getNotificationColor())
+                    .setOngoing(true)
+                    .setSmallIcon(getNotificationIcon())
+                    .setContentText(message)
+                    .setAutoCancel(true)
+                    .setContentIntent(pi)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setWhen(System.currentTimeMillis())
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentTitle(title).build()
             val notificationManager = context.getSystemService(
                 Context.NOTIFICATION_SERVICE
             ) as NotificationManager
@@ -93,7 +94,13 @@ class PushNotificationService:FirebaseMessagingService() {
     private fun getNotificationIcon(): Int {
         val useWhiteIcon =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        return if (useWhiteIcon) R.mipmap.ic_launcher else R.mipmap.ic_launcher
+        return if (useWhiteIcon) R.drawable.mountain_icon else R.drawable.mountain_icon
+    }
+
+    private fun getNotificationColor(): Int {
+        val useColor =
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        return if (useColor) R.color.notification_color else R.color.notification_color
     }
 
 }

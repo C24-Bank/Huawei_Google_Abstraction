@@ -18,8 +18,18 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="true" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/mountain_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_color" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <activity android:name=".DefinedActivity"></activity>
+        <activity android:name=".NotificationActivity"></activity>
         <activity android:name="de.c24.hg_abstraction.ScanActivity"></activity>
         <activity android:name=".ScaniActivity"></activity>
         <activity android:name=".MainActivity">

@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val DEFINED_CODE = 222
         private val REQUEST_CODE_SCAN = 0X01
+        private val CODE_NOTIFICATION = 111
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity() {
         servicebutton?.setOnClickListener {
             val list = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
             ActivityCompat.requestPermissions(this, list, DEFINED_CODE)
+        }
+        notificationbutton?.setOnClickListener {
+            this.startActivityForResult(
+                    Intent(this, NotificationActivity::class.java), CODE_NOTIFICATION)
         }
     }
 

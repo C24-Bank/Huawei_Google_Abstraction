@@ -3,4 +3,10 @@
     <string name="overview_title">Service Title</string>
     <string name="button_text">Button Text</string>
     <string name="button_text_service">Hoang Core Services</string>
+    <string name="button_text_notification">Notification Service</string>
+    <string name="default_notification_channel_id">de.c24.hg_abstraction.notification</string>
+    <string name="default_notification_channel_name">Hoang Channel</string>
+    <string name="msg_subscribed">Subscribing successful</string>
+    <string name="msg_subscribe_failed">Subscribing failed! Try again later</string>
+    <string name="msg_token_fmt">Token created</string>
 </resources>

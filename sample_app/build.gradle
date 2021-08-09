@@ -21,6 +21,34 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    signingConfigs {
+        debug {
+            storeFile file("//Users/hoang.ha/Uni/Bachelor-Arbeit/keystore/upload-keystore.jks")
+            storePassword "password"
+            keyAlias "upload"
+            keyPassword "password"
+            v1SigningEnabled true
+        }
+        release {
+            storeFile file("//Users/hoang.ha/Uni/Bachelor-Arbeit/keystore/upload-keystore.jks")
+            storePassword "password"
+            keyAlias "upload"
+            keyPassword "password"
+            v1SigningEnabled true
+        }
+    }
+
+    buildTypes {
+
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+        }
+
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 
     flavorDimensions "OS"
     productFlavors{
@@ -89,3 +117,12 @@ dependencies {
 
 apply plugin: 'com.huawei.agconnect'
 apply plugin: 'com.google.gms.google-services'
+
+//cert.rsa
+//19:CF:F7:6A:A4:DE:66:F3:44:1C:AE:79:24:91:1E:D7:5C:94:46:8C:8B:70:3C:B5:21:07:FC:83:CF:A8:F9:C9
+
+//huawei app signing
+//App signing certificate
+//5F:A2:92:6C:B5:20:56:95:A2:91:E3:A3:BF:DC:47:BA:48:44:6A:9A:A7:D8:F8:D1:8F:FC:F5:61:8F:06:45:AB
+//Upload certificate
+//19:CF:F7:6A:A4:DE:66:F3:44:1C:AE:79:24:91:1E:D7:5C:94:46:8C:8B:70:3C:B5:21:07:FC:83:CF:A8:F9:C9

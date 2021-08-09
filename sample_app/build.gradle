@@ -68,6 +68,7 @@ dependencies {
 
     huaweiImplementation 'com.huawei.hms:scan:2.0.0.300'
     huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    huaweiImplementation 'com.huawei.hms:push:5.1.1.301'
 
     googleImplementation platform('com.google.firebase:firebase-bom:28.3.0')
 
@@ -75,6 +76,7 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     googleImplementation 'com.google.firebase:firebase-messaging-ktx'
     googleImplementation 'com.google.firebase:firebase-analytics-ktx'
+    googleImplementation 'com.google.firebase:firebase-messaging-directboot:20.2.0'
 
     googleImplementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0'
     googleImplementation 'com.google.mlkit:barcode-scanning:16.2.0'

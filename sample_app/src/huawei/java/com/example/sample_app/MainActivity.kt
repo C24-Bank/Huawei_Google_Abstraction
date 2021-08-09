@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         servicebutton?.setOnClickListener {
             serviceBtnClick()
         }
+        notificationbutton?.setOnClickListener {
+            this.startActivityForResult(
+                Intent(this, NotificationActivity::class.java), REQUEST_CODE_SCAN)
+        }
     }
 
     private fun newViewBtnClick() {

@@ -15,8 +15,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core-scan" />
             <option value="$PROJECT_DIR$/core-services" />
+            <option value="$PROJECT_DIR$/google-cloudmessaging" />
             <option value="$PROJECT_DIR$/google-mlkit" />
             <option value="$PROJECT_DIR$/huawei-mlkit" />
+            <option value="$PROJECT_DIR$/huawei-pushkit" />
             <option value="$PROJECT_DIR$/huawei-scankit" />
             <option value="$PROJECT_DIR$/sample_app" />
           </set>

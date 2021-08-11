@@ -1,3 +1,5 @@
+include ':google-cloudmessaging'
+include ':huawei-pushkit'
 include ':core-scan'
 include ':huawei-scankit'
 include ':sample_app'

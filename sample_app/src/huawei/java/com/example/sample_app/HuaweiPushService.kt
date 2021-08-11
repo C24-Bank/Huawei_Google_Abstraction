@@ -3,6 +3,7 @@ package com.example.sample_app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.huawei.hms.push.BaseException
 import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
 import com.huawei.hms.push.SendException
@@ -86,6 +87,15 @@ class HuaweiPushService: HmsMessageService() {
 
     override fun onTokenError(e: Exception) {
         super.onTokenError(e)
+    }
+
+    override fun onMessageDelivered(msgId: String?, exception: Exception?) {
+        // Obtain the error code and description.
+        val errCode = (exception as BaseException).errorCode
+        val errInfo = exception.message
+        if (errCode != 0) {
+            // Process specific service requirements.
+        }
     }
 
 }

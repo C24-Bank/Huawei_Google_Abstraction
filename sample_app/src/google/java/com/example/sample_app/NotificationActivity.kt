@@ -83,6 +83,15 @@ class NotificationActivity: AppCompatActivity() {
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
     }
 
+    private fun sendingUpstreamMessage(){
+        val fm = Firebase.messaging
+        fm.send(remoteMessage("$SENDER_ID@fcm.googleapis.com") {
+            setMessageId(messageId.toString())
+            addData("my_message", "Hello World")
+            addData("my_action", "SAY_HELLO")
+        })
+    }
+
     companion object {
 
         private const val TAG = "NotificationActivity"

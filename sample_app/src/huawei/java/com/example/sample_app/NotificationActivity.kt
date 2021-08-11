@@ -8,6 +8,7 @@ import com.example.sample_app.databinding.ActivityNotificationBinding
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
+import com.huawei.hms.push.HmsMessaging
 
 class NotificationActivity: AppCompatActivity() {
     val TAG = "PushDemoLog"
@@ -68,4 +69,41 @@ class NotificationActivity: AppCompatActivity() {
             }
         }.start()
     }
+
+    private fun subscribe(topic: String?) {
+        try {
+            // Subscribe to a topic.
+            HmsMessaging.getInstance(this@NotificationActivity)
+                .subscribe(topic)
+                .addOnCompleteListener { task ->
+                    // Obtain the topic subscription result.
+                    if (task.isSuccessful) {
+                        Log.i(TAG, "subscribe topic successfully")
+                    } else {
+                        Log.e(TAG, "subscribe topic failed, the return value is " + task.exception.message)
+                    }
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "subscribe failed, catch exception : $e")
+        }
+    }
+
+    private fun unsubscribe(topic: String?) {
+        try {
+            // Unsubscribe from a topic.
+            HmsMessaging.getInstance(this@NotificationActivity)
+                .unsubscribe(topic)
+                .addOnCompleteListener { task ->
+                    // Obtain the topic unsubscription result.
+                    if (task.isSuccessful) {
+                        Log.i(TAG, "unsubscribe topic successfully")
+                    } else {
+                        Log.e(TAG, "unsubscribe topic failed, the return value is " + task.exception.message)
+                    }
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "unsubscribe failed, catch exception : $e")
+        }
+    }
+
 }

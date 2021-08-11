@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         private val TAG = "MainActivity"
         private val DEFINED_CODE = 222
         private val REQUEST_CODE_SCAN = 0X01
+        private val GET_NOTIFICATION_CODE = 111
     }
 
 

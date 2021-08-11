@@ -25,6 +25,10 @@
 		"api_key":"CgB6e3x90xo6oJL8l+YvjhTqBhUtYRmCrlCbHiN9Q+xA19SC7MsPA+k9zo7qqmVuSHH1GUZVwKb8L7Tr0yzRJKL0",
 		"package_name":"com.example.sample_app.google"
 	},
+	"oauth_client":{
+		"client_id":"104610749",
+		"client_type":1
+	},
 	"app_info":{
 		"app_id":"104610749",
 		"package_name":"com.example.sample_app.huawei"
@@ -50,9 +54,16 @@
 	"appInfos":[
 		{
 			"package_name":"com.example.sample_app.huawei",
+			"client":{
+				"app_id":"104610749"
+			},
 			"app_info":{
 				"package_name":"com.example.sample_app.huawei",
 				"app_id":"104610749"
+			},
+			"oauth_client":{
+				"client_type":1,
+				"client_id":"104610749"
 			}
 		}
 	]

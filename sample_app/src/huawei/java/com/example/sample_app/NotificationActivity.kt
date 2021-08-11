@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sample_app.databinding.ActivityNotificationBinding
+import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 
@@ -15,6 +16,7 @@ class NotificationActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         getToken()
     }
 

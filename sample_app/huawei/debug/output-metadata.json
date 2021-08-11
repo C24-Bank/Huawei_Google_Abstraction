@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.example.sample_app.huawei",
+  "variantName": "processHuaweiDebugResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 1,
+      "versionName": "1.0-huawei",
+      "outputFile": "sample_app-huawei-debug.apk"
+    }
+  ]
+}

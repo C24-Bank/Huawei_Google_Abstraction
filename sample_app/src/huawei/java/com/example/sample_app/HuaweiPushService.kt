@@ -12,6 +12,7 @@ class HuaweiPushService: HmsMessageService() {
     val CODELABS_ACTION= "com.huawei.codelabpush.action"
 
     override fun onNewToken(token: String?, bundle: Bundle?) {
+        super.onNewToken(token);
         // Obtain a token.
         Log.i(TAG, "have received refresh token:$token")
 

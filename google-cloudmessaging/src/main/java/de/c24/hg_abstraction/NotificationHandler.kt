@@ -64,7 +64,7 @@ class NotificationHandler {
         // [END log_reg_token]
     }
 
-    private fun sendingUpstreamMessage(){
+     fun sendingUpstreamMessage(){
         val fm = Firebase.messaging
         val messageId = 0 // Increment for each
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {

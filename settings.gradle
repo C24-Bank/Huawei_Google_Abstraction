@@ -1,3 +1,4 @@
+include ':core-pushkit'
 include ':google-cloudmessaging'
 include ':huawei-pushkit'
 include ':core-scan'

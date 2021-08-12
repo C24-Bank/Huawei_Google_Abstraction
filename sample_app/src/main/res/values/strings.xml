@@ -8,5 +8,5 @@
     <string name="default_notification_channel_name">Hoang Channel</string>
     <string name="msg_subscribed">Subscribing successful</string>
     <string name="msg_subscribe_failed">Subscribing failed! Try again later</string>
-    <string name="msg_token_fmt">Token created</string>
+    <string name="msg_token_fmt">Token created: %s</string>
 </resources>

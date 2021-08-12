@@ -95,6 +95,7 @@ dependencies {
     implementation project(':core-services')
     implementation project(':core-scan')
     googleImplementation project (':google-mlkit')
+    googleImplementation project (':google-cloudmessaging')
     huaweiImplementation project (':huawei-scankit')
 
     huaweiImplementation 'com.huawei.hms:scan:2.0.0.300'

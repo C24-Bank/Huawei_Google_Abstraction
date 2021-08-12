@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.sample_app.databinding.ActivityNotificationBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.Constants.MessagePayloadKeys.SENDER_ID
 import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.ktx.remoteMessage
 
 class NotificationActivity: AppCompatActivity() {
 
@@ -85,6 +87,7 @@ class NotificationActivity: AppCompatActivity() {
 
     private fun sendingUpstreamMessage(){
         val fm = Firebase.messaging
+        val messageId = 0 // Increment for each
         fm.send(remoteMessage("$SENDER_ID@fcm.googleapis.com") {
             setMessageId(messageId.toString())
             addData("my_message", "Hello World")

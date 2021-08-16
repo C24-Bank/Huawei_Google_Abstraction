@@ -8,15 +8,16 @@ import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 import com.huawei.hms.push.RemoteMessage
+import de.c24.hg_abstraction.core_pushkit.NotificationHandlerCore
 
-class NotificationHandler {
+class NotificationHandler: NotificationHandlerCore {
 
     companion object {
 
         private const val TAG = "NotificationHandler"
     }
 
-     fun getToken(context: Context) {
+     override fun getToken(context: Context) {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -44,7 +45,7 @@ class NotificationHandler {
         Log.i(TAG, "sending token to server. token:$token")
     }
 
-     fun deleteToken(context: Context) {
+     override fun deleteToken(context: Context) {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -65,7 +66,7 @@ class NotificationHandler {
         }.start()
     }
 
-     fun subscribeToTopic(topic: String?, context: Context) {
+     override fun subscribeToTopic(topic: String, context: Context) {
         try {
             // Subscribe to a topic.
             HmsMessaging.getInstance(context)
@@ -83,7 +84,7 @@ class NotificationHandler {
         }
     }
 
-     fun unsubscribe(topic: String?,context: Context) {
+     override fun unsubscribe(topic: String,context: Context) {
         try {
             // Unsubscribe from a topic.
             HmsMessaging.getInstance(context)
@@ -101,7 +102,7 @@ class NotificationHandler {
         }
     }
 
-    fun sendUplinkMessage(context: Context){
+    override fun sendUplinkMessage(context: Context){
         val messageId = System.currentTimeMillis().toString()
 
 // The input parameter of the RemoteMessage.Builder method is push.hcm.upstream, which cannot be changed.

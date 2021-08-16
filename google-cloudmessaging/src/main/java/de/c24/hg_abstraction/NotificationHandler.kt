@@ -11,14 +11,17 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.Constants
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.messaging.ktx.remoteMessage
+import de.c24.hg_abstraction.core_pushkit.NotificationHandlerCore
 
-class NotificationHandler {
+class NotificationHandler: NotificationHandlerCore {
 
     companion object {
 
         private const val TAG = "NotificationHandler"
     }
 
+
+    //not needed lol
     fun createChannel(notificationChannelID:String, channelName:String,context: Context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -30,7 +33,7 @@ class NotificationHandler {
         }
     }
 
-    fun subscribeToTopic(topic: String, context: Context){
+    override fun subscribeToTopic(topic: String, context: Context){
         Log.d(TAG, "Subscribing to $topic topic")
         // [START subscribe_topics]
         Firebase.messaging.subscribeToTopic(topic)
@@ -44,7 +47,11 @@ class NotificationHandler {
             }
     }
 
-    fun getToken(context:Context){
+    override fun unsubscribe(topic: String, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getToken(context:Context){
         // Get token
         // [START log_reg_token]
         Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
@@ -64,7 +71,7 @@ class NotificationHandler {
         // [END log_reg_token]
     }
 
-     fun sendingUpstreamMessage(){
+     override fun sendUplinkMessage(context: Context){
         val fm = Firebase.messaging
         val messageId = 0 // Increment for each
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {
@@ -72,5 +79,9 @@ class NotificationHandler {
             addData("my_message", "Hello World")
             addData("my_action", "SAY_HELLO")
         })
+    }
+
+    override fun deleteToken(context: Context) {
+        TODO("Not yet implemented")
     }
 }

@@ -43,5 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
     implementation 'com.huawei.hms:push:5.1.1.301'
+    implementation project(':core-pushkit')
 }
 apply plugin: 'com.huawei.agconnect'

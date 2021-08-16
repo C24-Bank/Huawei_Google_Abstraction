@@ -29,5 +29,5 @@ abstract class NotificationService: FirebaseMessagingService() {
     abstract override fun onMessageSent(p0: String)
 
     abstract override fun onSendError(p0: String, p1: Exception)
-    
+
 }

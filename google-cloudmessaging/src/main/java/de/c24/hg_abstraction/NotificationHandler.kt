@@ -23,7 +23,7 @@ class NotificationHandler: NotificationHandlerCore {
 
     override fun subscribeToTopic(topic: String, context: Context){
         Log.d(TAG, "Subscribing to $topic topic")
-        // [START subscribe_topics]
+        // [START subscribe_topic]
         Firebase.messaging.subscribeToTopic(topic)
             .addOnCompleteListener { task ->
                 var msg = "Subscribing successful"
@@ -35,8 +35,19 @@ class NotificationHandler: NotificationHandlerCore {
             }
     }
 
-    override fun unsubscribe(topic: String, context: Context) {
-        TODO("Not yet implemented")
+    override fun unsubscribeToTopic(topic: String, context: Context) {
+        Log.d(TAG, "Unsubscribing to $topic topic")
+        // [START Unsubscribe_topic]
+        Firebase.messaging.unsubscribeFromTopic(topic)
+                .addOnCompleteListener { task ->
+                    var msg = "Unsubscribing successful"
+                    if (!task.isSuccessful) {
+                        msg = "Unsubscribing failed! Try again later"
+                    }
+                    Log.d(TAG, msg)
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                }
+
     }
 
     override fun getToken(context:Context){
@@ -70,6 +81,8 @@ class NotificationHandler: NotificationHandlerCore {
     }
 
     override fun deleteToken(context: Context) {
-        TODO("Not yet implemented")
+        // Delete token
+        // [START log_delete_token]
+        Firebase.messaging.deleteToken()
     }
 }

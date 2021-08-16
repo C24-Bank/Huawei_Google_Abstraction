@@ -84,7 +84,7 @@ class NotificationHandler: NotificationHandlerCore {
         }
     }
 
-     override fun unsubscribe(topic: String,context: Context) {
+     override fun unsubscribeToTopic(topic: String,context: Context) {
         try {
             // Unsubscribe from a topic.
             HmsMessaging.getInstance(context)

@@ -9,7 +9,7 @@ interface NotificationHandlerCore {
 
     fun subscribeToTopic(topic:String, context: Context)
 
-    fun unsubscribe(topic:String, context: Context)
+    fun unsubscribeToTopic(topic:String, context: Context)
 
     fun sendUplinkMessage(context: Context)
 

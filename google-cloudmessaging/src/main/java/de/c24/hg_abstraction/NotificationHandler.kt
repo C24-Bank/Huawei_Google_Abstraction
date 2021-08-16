@@ -21,18 +21,6 @@ class NotificationHandler: NotificationHandlerCore {
     }
 
 
-    //not needed lol
-    fun createChannel(notificationChannelID:String, channelName:String,context: Context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(
-                NotificationChannel(notificationChannelID,
-                    channelName, NotificationManager.IMPORTANCE_LOW)
-            )
-        }
-    }
-
     override fun subscribeToTopic(topic: String, context: Context){
         Log.d(TAG, "Subscribing to $topic topic")
         // [START subscribe_topics]

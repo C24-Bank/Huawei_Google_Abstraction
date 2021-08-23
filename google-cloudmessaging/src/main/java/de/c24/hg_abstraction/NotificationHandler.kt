@@ -1,9 +1,7 @@
 package de.c24.hg_abstraction
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
@@ -20,6 +18,7 @@ class NotificationHandler: NotificationHandlerCore {
         private const val TAG = "NotificationHandler"
     }
 
+    override var tokenResult: ((String) -> Unit)? = null
 
     override fun subscribeToTopic(topic: String, context: Context){
         Log.d(TAG, "Subscribing to $topic topic")
@@ -50,7 +49,7 @@ class NotificationHandler: NotificationHandlerCore {
 
     }
 
-    override fun getToken(context:Context){
+    override fun getToken(context:Context) {
         // Get token
         // [START log_reg_token]
         Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
@@ -61,6 +60,11 @@ class NotificationHandler: NotificationHandlerCore {
 
             // Get new FCM registration token
             val token = task.result
+
+            // Check whether the token is empty.
+            if (!TextUtils.isEmpty(token) && token != null) {
+                tokenResult?.invoke(token)
+            }
 
             // Log and toast
             val msg = "Token created: $token"

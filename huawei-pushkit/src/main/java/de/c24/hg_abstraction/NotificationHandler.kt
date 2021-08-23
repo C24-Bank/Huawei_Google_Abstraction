@@ -17,6 +17,8 @@ class NotificationHandler: NotificationHandlerCore {
         private const val TAG = "NotificationHandler"
     }
 
+    override var tokenResult: ((String) -> Unit)? = null
+
      override fun getToken(context: Context) {
         // Create a thread.
         object : Thread() {
@@ -32,17 +34,13 @@ class NotificationHandler: NotificationHandlerCore {
 
                     // Check whether the token is empty.
                     if (!TextUtils.isEmpty(token)) {
-                        sendRegTokenToServer(token)
+                        tokenResult?.invoke(token)
                     }
                 } catch (e: ApiException) {
                     Log.e(TAG, "get token failed, $e")
                 }
             }
         }.start()
-    }
-
-     fun sendRegTokenToServer(token: String?) {
-        Log.i(TAG, "sending token to server. token:$token")
     }
 
      override fun deleteToken(context: Context) {

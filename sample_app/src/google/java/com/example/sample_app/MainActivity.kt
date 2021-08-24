@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
             this.startActivityForResult(
                     Intent(this, NotificationActivity::class.java), CODE_NOTIFICATION)
         }
+        notificationservicebutton?.setOnClickListener {
+            this.startActivityForResult(
+                Intent(this, PushNotificationActivity::class.java), CODE_NOTIFICATION)
+        }
     }
 
 

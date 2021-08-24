@@ -1,6 +1,5 @@
 package de.c24.hg_abstraction
 
-import android.app.Activity
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
@@ -19,7 +18,7 @@ class NotificationHandler: NotificationHandlerCore {
 
     override var tokenResult: ((String) -> Unit)? = null
 
-     override fun getToken(context: Context) {
+     override fun getToken(context: Context, appID: String?) {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -29,7 +28,7 @@ class NotificationHandler: NotificationHandlerCore {
 
                     // Set tokenScope to HCM.
                     val tokenScope = "HCM"
-                    val token = HmsInstanceId.getInstance(context).getToken(appId, tokenScope)
+                    val token = HmsInstanceId.getInstance(context).getToken(appID, tokenScope)
                     Log.i(TAG, "get token:$token")
 
                     // Check whether the token is empty.
@@ -43,7 +42,7 @@ class NotificationHandler: NotificationHandlerCore {
         }.start()
     }
 
-     override fun deleteToken(context: Context) {
+     override fun deleteToken(context: Context, appID: String?) {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -55,7 +54,7 @@ class NotificationHandler: NotificationHandlerCore {
                     val tokenScope = "HCM"
 
                     // Delete the token.
-                    HmsInstanceId.getInstance(context).deleteToken(appId, tokenScope)
+                    HmsInstanceId.getInstance(context).deleteToken(appID, tokenScope)
                     Log.i(TAG, "token deleted successfully")
                 } catch (e: ApiException) {
                     Log.e(TAG, "delete token failed, $e")
@@ -100,8 +99,7 @@ class NotificationHandler: NotificationHandlerCore {
         }
     }
 
-    override fun sendUplinkMessage(context: Context){
-        val messageId = System.currentTimeMillis().toString()
+    override fun sendUplinkMessage(context: Context, messageId: String){
 
 // The input parameter of the RemoteMessage.Builder method is push.hcm.upstream, which cannot be changed.
         val remoteMessage = RemoteMessage.Builder("push.hcm.upstream")

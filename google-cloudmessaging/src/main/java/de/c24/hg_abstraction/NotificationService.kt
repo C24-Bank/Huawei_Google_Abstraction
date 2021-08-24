@@ -7,6 +7,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.annotation.CallSuper
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -20,14 +21,29 @@ abstract class NotificationService: FirebaseMessagingService() {
 
     private lateinit var NOTIFICATION_ID: String
 
-    abstract override fun onMessageReceived(remoteMessage: RemoteMessage)
+    @CallSuper
+    override fun onMessageReceived(remoteMessage: RemoteMessage){
+        super.onMessageReceived(remoteMessage)
+    }
 
-    abstract override fun onNewToken(p0: String)
+    @CallSuper
+    override fun onNewToken(p0: String){
+        super.onNewToken(p0)
+    }
 
-    abstract override fun onDeletedMessages()
+    @CallSuper
+    override fun onDeletedMessages(){
+        super.onDeletedMessages()
+    }
 
-    abstract override fun onMessageSent(p0: String)
+    @CallSuper
+    override fun onMessageSent(p0: String){
+        super.onMessageSent(p0)
+    }
 
-    abstract override fun onSendError(p0: String, p1: Exception)
+    @CallSuper
+    override fun onSendError(p0: String, p1: Exception){
+        super.onSendError(p0, p1)
+    }
 
 }

@@ -11,11 +11,10 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import de.c24.hg_abstraction.NotificationService
-import java.lang.Exception
 
-class PushNotificationService :NotificationService(){
+class GoogleNotificationService: FirebaseMessagingService() {
 
     var NOTIFICATION_CHANNEL_ID = "de.c24.hg_abstraction.notification"
     val NOTIFICATION_ID = 100
@@ -42,51 +41,51 @@ class PushNotificationService :NotificationService(){
     }
 
     fun showNotification(
-        context: Context,
-        title: String?,
-        message: String?
+            context: Context,
+            title: String?,
+            message: String?
     ) {
         val ii: Intent = Intent(context, MainActivity::class.java)
         ii.data = Uri.parse("custom://" + System.currentTimeMillis())
         ii.action = "actionstring" + System.currentTimeMillis()
         ii.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         val pi =
-            PendingIntent.getActivity(context, 0, ii, PendingIntent.FLAG_UPDATE_CURRENT)
+                PendingIntent.getActivity(context, 0, ii, PendingIntent.FLAG_UPDATE_CURRENT)
         val notification: Notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Log.e("Notification", "Created in up to orio OS device");
             notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setColor(getNotificationColor())
-                .setOngoing(true)
-                .setSmallIcon(getNotificationIcon())
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pi)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .setWhen(System.currentTimeMillis())
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentTitle(title).build()
+                    .setColor(getNotificationColor())
+                    .setOngoing(true)
+                    .setSmallIcon(getNotificationIcon())
+                    .setContentText(message)
+                    .setAutoCancel(true)
+                    .setContentIntent(pi)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setWhen(System.currentTimeMillis())
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentTitle(title).build()
             val notificationManager = context.getSystemService(
-                Context.NOTIFICATION_SERVICE
+                    Context.NOTIFICATION_SERVICE
             ) as NotificationManager
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                title,
-                NotificationManager.IMPORTANCE_DEFAULT
+                    NOTIFICATION_CHANNEL_ID,
+                    title,
+                    NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(notificationChannel)
             notificationManager.notify(NOTIFICATION_ID, notification)
         } else {
             notification = NotificationCompat.Builder(context)
-                .setSmallIcon(getNotificationIcon())
-                .setAutoCancel(true)
-                .setContentText(message)
-                .setContentIntent(pi)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentTitle(title).build()
+                    .setSmallIcon(getNotificationIcon())
+                    .setAutoCancel(true)
+                    .setContentText(message)
+                    .setContentIntent(pi)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentTitle(title).build()
             val notificationManager = context.getSystemService(
-                Context.NOTIFICATION_SERVICE
+                    Context.NOTIFICATION_SERVICE
             ) as NotificationManager
             notificationManager.notify(NOTIFICATION_ID, notification)
         }
@@ -94,29 +93,14 @@ class PushNotificationService :NotificationService(){
 
     private fun getNotificationIcon(): Int {
         val useWhiteIcon =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         return if (useWhiteIcon) R.drawable.mountain_icon else R.drawable.mountain_icon
     }
 
     private fun getNotificationColor(): Int {
         val useColor =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         return if (useColor) R.color.notification_color else R.color.notification_color
-    }
-
-    override fun onDeletedMessages() {
-        super.onDeletedMessages()
-        TODO("Not yet implemented")
-    }
-
-    override fun onMessageSent(p0: String) {
-        super.onMessageSent(p0)
-        TODO("Not yet implemented")
-    }
-
-    override fun onSendError(p0: String, p1: Exception) {
-        super.onSendError(p0, p1)
-        TODO("Not yet implemented")
     }
 
 }

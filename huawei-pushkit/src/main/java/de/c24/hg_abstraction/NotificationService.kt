@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.CallSuper
 import com.huawei.hms.push.BaseException
 import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
@@ -17,18 +18,39 @@ abstract class NotificationService: HmsMessageService() {
 
     private lateinit var NOTIFICATION_ID: String
 
-    abstract override fun onNewToken(token: String?, bundle: Bundle?)
+    @CallSuper
+    override fun onNewToken(token: String?){
+        super.onNewToken(token)
+    }
 
-    abstract override fun onMessageReceived(message: RemoteMessage?)
+    @CallSuper
+    override fun onMessageReceived(message: RemoteMessage?){
+        super.onMessageReceived(message)
+    }
 
-    abstract override fun onMessageSent(msgId: String?)
+    @CallSuper
+    override fun onMessageSent(msgId: String?){
+        super.onMessageSent(msgId)
+    }
 
-    abstract override fun onSendError(msgId: String?, exception: Exception?)
+    @CallSuper
+    override fun onSendError(msgId: String?, exception: Exception?){
+        super.onSendError(msgId,exception)
+    }
 
-    abstract override fun onTokenError(e: Exception)
+    @CallSuper
+    override fun onTokenError(e: Exception){
+        super.onTokenError(e)
+    }
 
-    abstract override fun onMessageDelivered(msgId: String?, exception: Exception?)
+    @CallSuper
+    override fun onMessageDelivered(msgId: String?, exception: Exception?){
+        super.onMessageDelivered(msgId,exception)
+    }
 
-    abstract override fun onDeletedMessages()
+    @CallSuper
+    override fun onDeletedMessages(){
+        super.onDeletedMessages()
+    }
 
 }

@@ -94,9 +94,11 @@ dependencies {
 
     implementation project(':core-services')
     implementation project(':core-scan')
+    implementation project(':core-pushkit')
     googleImplementation project (':google-mlkit')
     googleImplementation project (':google-cloudmessaging')
     huaweiImplementation project (':huawei-scankit')
+    huaweiImplementation project (':huawei-pushkit')
 
     huaweiImplementation 'com.huawei.hms:scan:2.0.0.300'
     huaweiImplementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'

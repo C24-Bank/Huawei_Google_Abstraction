@@ -30,7 +30,6 @@ class NotificationHandler: NotificationHandlerCore {
                     msg = "Subscribing failed! Try again later"
                 }
                 Log.d(TAG, msg)
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -44,12 +43,11 @@ class NotificationHandler: NotificationHandlerCore {
                         msg = "Unsubscribing failed! Try again later"
                     }
                     Log.d(TAG, msg)
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                 }
 
     }
 
-    override fun getToken(context:Context) {
+    override fun getToken(context:Context,  appID: String?) {
         // Get token
         // [START log_reg_token]
         Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
@@ -69,22 +67,20 @@ class NotificationHandler: NotificationHandlerCore {
             // Log and toast
             val msg = "Token created: $token"
             Log.d(TAG, msg)
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         })
         // [END log_reg_token]
     }
 
-     override fun sendUplinkMessage(context: Context){
+     override fun sendUplinkMessage(context: Context, messageId: String){
         val fm = Firebase.messaging
-        val messageId = 0 // Increment for each
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {
-            setMessageId(messageId.toString())
+            setMessageId(messageId)
             addData("my_message", "Hello World")
             addData("my_action", "SAY_HELLO")
         })
     }
 
-    override fun deleteToken(context: Context) {
+    override fun deleteToken(context: Context, appID: String?) {
         // Delete token
         // [START log_delete_token]
         Firebase.messaging.deleteToken()

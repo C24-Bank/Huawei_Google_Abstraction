@@ -3,11 +3,11 @@ package com.example.sample_app
 import android.content.Intent
 import android.util.Log
 import com.huawei.hms.push.BaseException
-import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
 import com.huawei.hms.push.SendException
+import de.c24.hg_abstraction.NotificationService
 
-class HuaweiPushService: HmsMessageService() {
+class PushNotificationService: NotificationService() {
     val TAG = "PushDemoLog"
     val CODELABS_ACTION= "com.huawei.codelabpush.action"
 
@@ -26,7 +26,8 @@ class HuaweiPushService: HmsMessageService() {
         Log.i(TAG, "sending token to server. token:$token")
     }
 
-    override fun onMessageReceived(message: RemoteMessage?) {
+    override fun onMessageReceived(message: RemoteMessage?)  {
+        super.onMessageReceived(message)
         Log.i(TAG, "onMessageReceived is called")
 
         // Check whether the message is empty.
@@ -56,6 +57,7 @@ class HuaweiPushService: HmsMessageService() {
             processWithin10s(message)
         }
     }
+
     private fun startWorkManagerJob(message: RemoteMessage?) {
         Log.d(TAG, "Start new Job processing.")
     }
@@ -63,8 +65,8 @@ class HuaweiPushService: HmsMessageService() {
         Log.d(TAG, "Processing now.")
     }
 
-
     override fun onMessageSent(msgId: String?) {
+        super.onMessageSent(msgId)
         Log.i(TAG, "onMessageSent called, Message id:$msgId")
         val intent = Intent()
         intent.action = CODELABS_ACTION
@@ -74,6 +76,7 @@ class HuaweiPushService: HmsMessageService() {
     }
 
     override fun onSendError(msgId: String?, exception: Exception?) {
+        super.onSendError(msgId, exception)
         Log.i(TAG, "onSendError called, message id:$msgId, ErrCode:${(exception as SendException).errorCode}, " +
                 "description:${exception.message}")
         val intent = Intent()
@@ -86,9 +89,11 @@ class HuaweiPushService: HmsMessageService() {
 
     override fun onTokenError(e: Exception) {
         super.onTokenError(e)
+        TODO("Not yet implemented")
     }
 
     override fun onMessageDelivered(msgId: String?, exception: Exception?) {
+        super.onMessageDelivered(msgId, exception)
         // Obtain the error code and description.
         val errCode = (exception as BaseException).errorCode
         val errInfo = exception.message
@@ -97,4 +102,7 @@ class HuaweiPushService: HmsMessageService() {
         }
     }
 
+    override fun onDeletedMessages() {
+        super.onDeletedMessages()
+    }
 }

@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             this.startActivityForResult(
                 Intent(this, NotificationActivity::class.java), REQUEST_CODE_SCAN)
         }
+        notificationservicebutton?.setOnClickListener {
+            this.startActivityForResult(
+                Intent(this, PushNotificationActivity::class.java), REQUEST_CODE_SCAN)
+        }
     }
 
     private fun newViewBtnClick() {

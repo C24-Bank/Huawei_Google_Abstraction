@@ -32,6 +32,7 @@
         <activity android:name=".NotificationActivity"></activity>
         <activity android:name="de.c24.hg_abstraction.ScanActivity"></activity>
         <activity android:name=".ScaniActivity"></activity>
+        <activity android:name=".PushNotificationActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +41,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".PushNotificationService"
+            android:name=".GoogleNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

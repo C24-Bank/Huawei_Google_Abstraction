@@ -13,7 +13,7 @@ interface NotificationHandlerCore {
 
     fun unsubscribeToTopic(topic:String, context: Context)
 
-    fun sendUplinkMessage(context: Context, messageID:String)
+    fun sendUplinkMessage(context: Context, messageID:String, dataList: List<Pair<String,String>>)
 
     fun deleteToken(context: Context, appID: String? = null)
 }

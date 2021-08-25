@@ -1,22 +1,14 @@
 package de.c24.hg_abstraction
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import androidx.annotation.CallSuper
-import com.huawei.hms.push.BaseException
 import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
-import com.huawei.hms.push.SendException
 
 abstract class NotificationService: HmsMessageService() {
 
-    private lateinit var activity: Activity
+    protected open lateinit var notificationChanelId: String
 
-    private lateinit var NOTIFICATION_CHANNEL_ID: String
-
-    private lateinit var NOTIFICATION_ID: String
+    protected open lateinit var notificationId: String
 
     @CallSuper
     override fun onNewToken(token: String?){

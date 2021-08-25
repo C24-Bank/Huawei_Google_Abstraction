@@ -71,12 +71,15 @@ class NotificationHandler: NotificationHandlerCore {
         // [END log_reg_token]
     }
 
-     override fun sendUplinkMessage(context: Context, messageId: String){
+     override fun sendUplinkMessage(context: Context, messageId: String, dataList: List<Pair<String,String>>){
         val fm = Firebase.messaging
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {
             setMessageId(messageId)
-            addData("my_message", "Hello World")
-            addData("my_action", "SAY_HELLO")
+
+            dataList.forEach { (key,data)->
+                addData(key,data)
+            }
+
         })
     }
 

@@ -99,13 +99,16 @@ class NotificationHandler: NotificationHandlerCore {
         }
     }
 
-    override fun sendUplinkMessage(context: Context, messageId: String){
+    override fun sendUplinkMessage(context: Context, messageId: String, dataList: List<Pair<String,String>>){
 
 // The input parameter of the RemoteMessage.Builder method is push.hcm.upstream, which cannot be changed.
         val remoteMessage = RemoteMessage.Builder("push.hcm.upstream")
             .setMessageId(messageId)
-            .addData("key1", "data1")
-            .addData("key2", "data2")
+            .apply {
+                dataList.forEach { (key,data)->
+                    addData(key,data)
+                }
+            }
             .build()
         try {
             // Send an uplink message.

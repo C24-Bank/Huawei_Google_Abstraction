@@ -15,11 +15,9 @@ import java.lang.Exception
 
 abstract class NotificationService: FirebaseMessagingService() {
 
-    private lateinit var activity: Activity
+    protected open lateinit var notificationChanelId: String
 
-    private lateinit var NOTIFICATION_CHANNEL_ID: String
-
-    private lateinit var NOTIFICATION_ID: String
+    protected open lateinit var notificationId: String
 
     @CallSuper
     override fun onMessageReceived(remoteMessage: RemoteMessage){

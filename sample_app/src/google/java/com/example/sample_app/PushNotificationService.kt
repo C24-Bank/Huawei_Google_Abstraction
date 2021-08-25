@@ -1,9 +1,6 @@
 package com.example.sample_app
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -17,8 +14,8 @@ import java.lang.Exception
 
 class PushNotificationService :NotificationService(){
 
-    var NOTIFICATION_CHANNEL_ID = "de.c24.hg_abstraction.notification"
-    val NOTIFICATION_ID = 100
+    override var notificationChanelId = "de.c24.hg_abstraction.notification"
+    override var notificationId = "100"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -55,7 +52,7 @@ class PushNotificationService :NotificationService(){
         val notification: Notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Log.e("Notification", "Created in up to orio OS device");
-            notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+            notification = NotificationCompat.Builder(context, notificationChanelId)
                 .setColor(getNotificationColor())
                 .setOngoing(true)
                 .setSmallIcon(getNotificationIcon())
@@ -71,12 +68,12 @@ class PushNotificationService :NotificationService(){
                 Context.NOTIFICATION_SERVICE
             ) as NotificationManager
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
+                    notificationChanelId,
                 title,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(notificationChannel)
-            notificationManager.notify(NOTIFICATION_ID, notification)
+            notificationManager.notify(notificationId.toInt(), notification)
         } else {
             notification = NotificationCompat.Builder(context)
                 .setSmallIcon(getNotificationIcon())
@@ -88,7 +85,7 @@ class PushNotificationService :NotificationService(){
             val notificationManager = context.getSystemService(
                 Context.NOTIFICATION_SERVICE
             ) as NotificationManager
-            notificationManager.notify(NOTIFICATION_ID, notification)
+            notificationManager.notify(notificationId.toInt(), notification)
         }
     }
 

@@ -25,7 +25,11 @@ class PushNotificationActivity:AppCompatActivity() {
         }
 
         pushNotificationHandler.tokenResult = { result ->
-            Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
+            runOnUiThread(Runnable {
+                run {
+                    Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 }

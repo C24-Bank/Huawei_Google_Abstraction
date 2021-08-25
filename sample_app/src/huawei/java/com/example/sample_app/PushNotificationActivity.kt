@@ -24,8 +24,12 @@ class PushNotificationActivity : AppCompatActivity() {
             pushNotificationHandler.subscribeToTopic("weather",this)
         }
 
-        /*pushNotificationHandler.tokenResult = { result ->
-            Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
-        }*/
+        pushNotificationHandler.tokenResult = { result ->
+            runOnUiThread(Runnable {
+                run {
+                    Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 }

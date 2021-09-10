@@ -18,18 +18,14 @@ class ScanActivity : AppCompatActivity() {
 
     companion object
     {
-        private val TAG = "DefinedActivity"
-        //declare RemoteView instance
-        private var remoteView: RemoteView? = null
         //declare the key ,used to get the value returned from scankit
         val SCAN_RESULT = "scanResult"
-        var mScreenWidth = 0
-        var mScreenHeight = 0
         //scan_view_finder width & height is  300dp
         val SCAN_FRAME_SIZE = 300
-        private val DEFINED_CODE = 222
-        private val REQUEST_CODE_SCAN = 0X01
     }
+
+    //declare RemoteView instance
+    private lateinit var remoteView: RemoteView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,19 +65,19 @@ class ScanActivity : AppCompatActivity() {
         val dm = resources.displayMetrics
         //2.get screen size
         val density = dm.density
-        ScanView.mScreenWidth =dm.widthPixels
-        ScanView.mScreenHeight =dm.heightPixels
+        val mScreenWidth =dm.widthPixels
+        val mScreenHeight =dm.heightPixels
         //scan_view_finder width & height is  300dp
-        var scanFrameSize=(ScanView.SCAN_FRAME_SIZE *density)
+        val scanFrameSize=(SCAN_FRAME_SIZE *density)
         //3.caculate viewfinder's rect,it's in the middle of the layout
         //set scanning area(Optional, rect can be null,
         // If not configure,default is in the center of layout)
         val rect = Rect()
         apply {
-            rect.left = (ScanView.mScreenWidth / 2 - scanFrameSize / 2).toInt()
-            rect.right = (ScanView.mScreenWidth / 2 + scanFrameSize / 2).toInt()
-            rect.top = (ScanView.mScreenHeight / 2 - scanFrameSize / 2).toInt()
-            rect.bottom = (ScanView.mScreenHeight / 2 + scanFrameSize / 2).toInt()
+            rect.left = (mScreenWidth / 2 - scanFrameSize / 2).toInt()
+            rect.right = (mScreenWidth / 2 + scanFrameSize / 2).toInt()
+            rect.top = (mScreenHeight / 2 - scanFrameSize / 2).toInt()
+            rect.bottom = (mScreenHeight / 2 + scanFrameSize / 2).toInt()
         }
         return rect
     }

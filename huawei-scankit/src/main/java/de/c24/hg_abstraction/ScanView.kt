@@ -32,9 +32,6 @@ class ScanView@JvmOverloads constructor(
     {
         //declare RemoteView instance
         private var remoteView: RemoteView? = null
-        //declare the key ,used to get the value returned from scankit
-        var mScreenWidth = 0
-        var mScreenHeight = 0
         //scan_view_finder width & height is  300dp
         val SCAN_FRAME_SIZE = 300
 
@@ -61,9 +58,9 @@ class ScanView@JvmOverloads constructor(
         val dm = resources.displayMetrics
         //2.get screen size
         val density = dm.density
-        mScreenWidth=dm.widthPixels
-        mScreenHeight=dm.heightPixels
-        var scanFrameSize=(SCAN_FRAME_SIZE*density)
+        val mScreenWidth=dm.widthPixels
+        val mScreenHeight=dm.heightPixels
+        val scanFrameSize=(SCAN_FRAME_SIZE*density)
         //3.caculate viewfinder's rect,it's in the middle of the layout
         //set scanning area(Optional, rect can be null,
         // If not configure,default is in the center of layout)

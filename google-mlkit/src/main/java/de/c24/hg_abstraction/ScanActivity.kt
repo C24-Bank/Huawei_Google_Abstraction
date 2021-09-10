@@ -49,6 +49,19 @@ class ScanActivity: AppCompatActivity() {
         startCamera()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
+    }
+
+    private fun initBarCodeScanner() {
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
+            .build()
+
+        barcodeScanner = BarcodeScanning.getClient(options)
+    }
+
     private fun startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
@@ -74,16 +87,9 @@ class ScanActivity: AppCompatActivity() {
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
 
-        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
-    }
-
-
-    private fun initBarCodeScanner() {
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
-            .build()
-
-        barcodeScanner = BarcodeScanning.getClient(options)
+        cameraProvider.bindToLifecycle(
+            this as LifecycleOwner, cameraSelector, preview, setupAnalyzer()
+        )
     }
 
     private fun setupAnalyzer(): ImageAnalysis {
@@ -111,12 +117,6 @@ class ScanActivity: AppCompatActivity() {
 
         return imageAnalysis
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        cameraExecutor.shutdown()
-    }
-
 
     private class YourImageAnalyzer(
         barcodeScanner: BarcodeScanner,

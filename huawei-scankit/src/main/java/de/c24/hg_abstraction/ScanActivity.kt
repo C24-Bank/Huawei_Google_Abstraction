@@ -43,6 +43,11 @@ class ScanActivity : AppCompatActivity() {
         remoteView?.onStart()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        remoteView?.onDestroy()
+    }
+
     private fun startCamera(){
         //caculate viewfinder's rect,it's in the middle of the layout
         val rect = calculateRect()
@@ -66,6 +71,7 @@ class ScanActivity : AppCompatActivity() {
         val density = dm.density
         ScanView.mScreenWidth =dm.widthPixels
         ScanView.mScreenHeight =dm.heightPixels
+        //scan_view_finder width & height is  300dp
         var scanFrameSize=(ScanView.SCAN_FRAME_SIZE *density)
         //3.caculate viewfinder's rect,it's in the middle of the layout
         //set scanning area(Optional, rect can be null,
@@ -108,11 +114,6 @@ class ScanActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         remoteView?.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        remoteView?.onDestroy()
     }
 
     override fun onStop() {

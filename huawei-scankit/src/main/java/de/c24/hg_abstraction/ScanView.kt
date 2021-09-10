@@ -72,6 +72,41 @@ class ScanView@JvmOverloads constructor(
         frameLayout.addView(remoteView, params)
     }
 
+    private fun calculateRect(): Rect{
+        //1.get screen density to caculate viewfinder's rect
+        val dm = resources.displayMetrics
+        //2.get screen size
+        val density = dm.density
+        mScreenWidth=dm.widthPixels
+        mScreenHeight=dm.heightPixels
+        var scanFrameSize=(SCAN_FRAME_SIZE*density)
+        //3.caculate viewfinder's rect,it's in the middle of the layout
+        //set scanning area(Optional, rect can be null,If not configure,default is in the center of layout)
+        val rect = Rect()
+        apply {
+            rect.left = (mScreenWidth / 2 - scanFrameSize / 2).toInt()
+            rect.right = (mScreenWidth / 2 + scanFrameSize / 2).toInt()
+            rect.top = (mScreenHeight / 2 - scanFrameSize / 2).toInt()
+            rect.bottom = (mScreenHeight / 2 + scanFrameSize / 2).toInt()
+        }
+        return rect
+    }
+
+    private fun initializeRemoteView(activity: Activity,rect: Rect):RemoteView{
+        //initialize RemoteView instance, and set calling back for scanning result
+        val remoteView = RemoteView.Builder().setContext(activity).setBoundingBox(rect).setFormat(HmsScan.ALL_SCAN_TYPE).build()
+        remoteView?.onCreate(null)
+        remoteView?.setOnResultCallback { result ->
+            if (result != null && result.size > 0 && result[0] != null && !TextUtils.isEmpty(result[0].getOriginalValue())) {
+                val hmsScanResult: HmsScan = result[0]
+                resultListener?.invoke(hmsScanResult.originalValue)
+            }
+        }
+        return remoteView
+    }
+
+
+
     override fun destroyView(){
         remoteView?.onDestroy()
     }

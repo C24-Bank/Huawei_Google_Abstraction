@@ -48,9 +48,12 @@ class ScanView@JvmOverloads constructor(
          remoteView = initializeRemoteView(activity,rect)
 
         // Add the defined RemoteView to the page layout.
-        val params = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val params = FrameLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+        )
         val frameLayout = findViewById<FrameLayout>(R.id.container)
         frameLayout.addView(remoteView, params)
+         remoteView?.onStart()
     }
 
     private fun calculateRect(): Rect{
@@ -62,7 +65,8 @@ class ScanView@JvmOverloads constructor(
         mScreenHeight=dm.heightPixels
         var scanFrameSize=(SCAN_FRAME_SIZE*density)
         //3.caculate viewfinder's rect,it's in the middle of the layout
-        //set scanning area(Optional, rect can be null,If not configure,default is in the center of layout)
+        //set scanning area(Optional, rect can be null,
+        // If not configure,default is in the center of layout)
         val rect = Rect()
         apply {
             rect.left = (mScreenWidth / 2 - scanFrameSize / 2).toInt()
@@ -75,19 +79,21 @@ class ScanView@JvmOverloads constructor(
 
     private fun initializeRemoteView(activity: Activity,rect: Rect):RemoteView{
         //initialize RemoteView instance, and set calling back for scanning result
-        val remoteView = RemoteView.Builder().setContext(activity).setBoundingBox(rect).setFormat(HmsScan.ALL_SCAN_TYPE).build()
+        val remoteView = RemoteView.Builder()
+            .setContext(activity).setBoundingBox(rect).setFormat(HmsScan.ALL_SCAN_TYPE).build()
         remoteView?.onCreate(null)
         remoteView?.setOnResultCallback { result ->
-            if (result != null && result.size > 0 && result[0] != null && !TextUtils.isEmpty(result[0].getOriginalValue())) {
+            if (
+                result != null && result.size > 0 && result[0] != null &&
+                !TextUtils.isEmpty(result[0].getOriginalValue())
+            ) {
                 val hmsScanResult: HmsScan = result[0]
                 resultListener?.invoke(hmsScanResult.originalValue)
             }
         }
         return remoteView
     }
-
-
-
+    
     override fun destroyView(){
         remoteView?.onDestroy()
     }

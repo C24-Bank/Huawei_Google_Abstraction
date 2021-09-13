@@ -20,6 +20,30 @@ class NotificationHandler: NotificationHandlerCore {
 
     override var tokenResult: ((String) -> Unit)? = null
 
+    override fun getToken(context:Context,  appID: String?) {
+        // Get token
+        // [START log_reg_token]
+        Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Check whether the token is empty.
+            if (!TextUtils.isEmpty(token) && token != null) {
+                tokenResult?.invoke(token)
+            }
+
+            // Log and toast
+            val msg = "Token created: $token"
+            Log.d(TAG, msg)
+        })
+        // [END log_reg_token]
+    }
+
     override fun subscribeToTopic(topic: String, context: Context){
         Log.d(TAG, "Subscribing to $topic topic")
         // [START subscribe_topic]
@@ -45,30 +69,6 @@ class NotificationHandler: NotificationHandlerCore {
                     Log.d(TAG, msg)
                 }
 
-    }
-
-    override fun getToken(context:Context,  appID: String?) {
-        // Get token
-        // [START log_reg_token]
-        Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Check whether the token is empty.
-            if (!TextUtils.isEmpty(token) && token != null) {
-                tokenResult?.invoke(token)
-            }
-
-            // Log and toast
-            val msg = "Token created: $token"
-            Log.d(TAG, msg)
-        })
-        // [END log_reg_token]
     }
 
      override fun sendUplinkMessage(context: Context, messageId: String, dataList: List<Pair<String,String>>){

@@ -6,10 +6,6 @@ import com.huawei.hms.push.RemoteMessage
 
 abstract class NotificationService: HmsMessageService() {
 
-    protected open lateinit var notificationChanelId: String
-
-    protected open lateinit var notificationId: String
-
     @CallSuper
     override fun onNewToken(token: String?){
         super.onNewToken(token)

@@ -112,30 +112,4 @@ class ScanActivity: AppCompatActivity() {
 
         return imageAnalysis
     }
-
-    private class YourImageAnalyzer(
-        barcodeScanner: BarcodeScanner,
-        private val onQrCodesDetected: (qrCodes: List<Barcode>) -> Unit
-    ) : ImageAnalysis.Analyzer {
-        val barCodeScanner = barcodeScanner
-
-        override fun analyze(imageProxy: ImageProxy) {
-            imageProxy.image?.let { inputImage ->
-                val processingImage = InputImage.fromMediaImage(
-                    inputImage,
-                    imageProxy.imageInfo.rotationDegrees
-                )
-
-                barCodeScanner.process(processingImage)
-                    .addOnSuccessListener {
-                        imageProxy.close()
-                        onQrCodesDetected.invoke(it)
-                    }
-                    .addOnFailureListener {
-                        imageProxy.close()
-                    }
-            }
-        }
-    }
-
 }

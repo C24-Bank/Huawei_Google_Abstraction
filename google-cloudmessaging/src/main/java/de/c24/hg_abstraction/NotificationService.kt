@@ -15,10 +15,6 @@ import java.lang.Exception
 
 abstract class NotificationService: FirebaseMessagingService() {
 
-    protected open lateinit var notificationChanelId: String
-
-    protected open lateinit var notificationId: String
-
     @CallSuper
     override fun onMessageReceived(remoteMessage: RemoteMessage){
         super.onMessageReceived(remoteMessage)

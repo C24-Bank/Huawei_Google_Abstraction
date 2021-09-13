@@ -35,7 +35,7 @@ class ScaniActivity :AppCompatActivity(){
 
         if (requestCode == ScaniActivity.DEFINED_CODE) {
             if (allPermissionsGranted(permissions)) {
-                //start your activity for scanning barcode
+                //invoke the startCamera method of the view object for scanning barcode
                 scanView.startCamera(this)
                 scanView.resultListener = { result ->
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show()

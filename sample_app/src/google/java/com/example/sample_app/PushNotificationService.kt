@@ -14,8 +14,8 @@ import java.lang.Exception
 
 class PushNotificationService :NotificationService(){
 
-    override var notificationChanelId = "de.c24.hg_abstraction.notification"
-    override var notificationId = "100"
+     var notificationChanelId = "de.c24.hg_abstraction.notification"
+     var notificationId = "100"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)

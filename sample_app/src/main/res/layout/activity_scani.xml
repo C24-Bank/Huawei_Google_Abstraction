@@ -11,7 +11,7 @@
         android:textSize="48dp"
         android:text="Hallo Test"
         android:textColor="@color/black"
-        android:background="@color/purple_200"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -23,8 +23,6 @@ class NotificationHandler: NotificationHandlerCore {
         object : Thread() {
             override fun run() {
                 try {
-                    // Obtain the app ID from the agconnect-service.json file.
-                    val appId = "your_APPId"
 
                     // Set tokenScope to HCM.
                     val tokenScope = "HCM"
@@ -47,8 +45,6 @@ class NotificationHandler: NotificationHandlerCore {
         object : Thread() {
             override fun run() {
                 try {
-                    // Obtain the app ID from the agconnect-service.json file.
-                    val appId = "your_APPId"
 
                     // Set tokenScope to HCM.
                     val tokenScope = "HCM"
@@ -58,7 +54,7 @@ class NotificationHandler: NotificationHandlerCore {
                     Log.i(TAG, "token deleted successfully")
                 } catch (e: ApiException) {
                     Log.e(TAG, "delete token failed, $e")
-                }
+                    }
             }
         }.start()
     }
@@ -73,7 +69,11 @@ class NotificationHandler: NotificationHandlerCore {
                     if (task.isSuccessful) {
                         Log.i(TAG, "subscribe topic successfully")
                     } else {
-                        Log.e(TAG, "subscribe topic failed, the return value is " + task.exception.message)
+                        Log.e(
+                            TAG,
+                            "subscribe topic failed, the return value is " +
+                                    task.exception.message
+                        )
                     }
                 }
         } catch (e: Exception) {
@@ -91,7 +91,11 @@ class NotificationHandler: NotificationHandlerCore {
                     if (task.isSuccessful) {
                         Log.i(TAG, "unsubscribe topic successfully")
                     } else {
-                        Log.e(TAG, "unsubscribe topic failed, the return value is " + task.exception.message)
+                        Log.e(
+                            TAG,
+                            "unsubscribe topic failed, the return value is " +
+                                    task.exception.message
+                        )
                     }
                 }
         } catch (e: Exception) {
@@ -99,9 +103,13 @@ class NotificationHandler: NotificationHandlerCore {
         }
     }
 
-    override fun sendUplinkMessage(context: Context, messageId: String, dataList: List<Pair<String,String>>){
-
-// The input parameter of the RemoteMessage.Builder method is push.hcm.upstream, which cannot be changed.
+    override fun sendUplinkMessage(
+        context: Context,
+        messageId: String,
+        dataList: List<Pair<String,String>>)
+    {
+        // The input parameter of the RemoteMessage.Builder method is push.hcm.upstream,
+        // which cannot be changed.
         val remoteMessage = RemoteMessage.Builder("push.hcm.upstream")
             .setMessageId(messageId)
             .apply {

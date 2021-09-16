@@ -57,4 +57,3 @@ dependencies {
     huaweiCompile project(':huawei-scankit')
 }
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.huawei.agconnect'

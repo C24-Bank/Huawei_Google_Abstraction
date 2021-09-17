@@ -113,9 +113,11 @@ class NotificationHandler: NotificationHandlerCore {
         val remoteMessage = RemoteMessage.Builder("push.hcm.upstream")
             .setMessageId(messageId)
             .apply {
-                dataList.forEach { (key,data)->
+
+                for((key,data) in dataList){
                     addData(key,data)
                 }
+
             }
             .build()
         try {

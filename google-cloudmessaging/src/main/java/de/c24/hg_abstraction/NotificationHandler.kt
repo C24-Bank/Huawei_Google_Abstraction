@@ -80,7 +80,7 @@ class NotificationHandler: NotificationHandlerCore {
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {
             setMessageId(messageId)
 
-            dataList.forEach { (key,data)->
+            for((key,data) in dataList){
                 addData(key,data)
             }
 

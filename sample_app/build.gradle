@@ -76,8 +76,8 @@ android {
 }
 
 configurations{
-    huaweiDebugCompile
-    googleDebugCompile
+    huaweiDebugImplementation
+    googleDebugImplementation
 }
 
 dependencies {

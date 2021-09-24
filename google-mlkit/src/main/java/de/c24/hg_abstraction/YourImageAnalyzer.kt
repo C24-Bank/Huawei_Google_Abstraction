@@ -1,5 +1,6 @@
 package de.c24.hg_abstraction
 
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.Barcode
@@ -12,6 +13,7 @@ class YourImageAnalyzer(
 ) : ImageAnalysis.Analyzer {
     val barCodeScanner = barcodeScanner
 
+    @androidx.camera.core.ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
         imageProxy.image?.let { inputImage ->
             val processingImage = InputImage.fromMediaImage(

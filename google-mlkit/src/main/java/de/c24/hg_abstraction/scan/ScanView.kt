@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.scan
 
 import android.app.Activity
 import android.content.Context
@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,10 +16,8 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
 import de.c24.hg_abstraction.core_scan.ScanViewCore
-import de.c24.hg_abstraction.databinding.ScanViewBinding
-import kotlinx.android.synthetic.main.activity_scan.*
+import de.c24.hg_abstraction.scan.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

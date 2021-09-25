@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.notification
 
 import android.content.Context
 import android.text.TextUtils

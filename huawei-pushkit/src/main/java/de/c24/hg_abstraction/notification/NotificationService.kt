@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.notification
 
 import androidx.annotation.CallSuper
 import com.huawei.hms.push.HmsMessageService

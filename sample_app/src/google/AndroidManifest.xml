@@ -30,7 +30,7 @@
 
         <activity android:name=".DefinedActivity"></activity>
         <activity android:name=".NotificationActivity"></activity>
-        <activity android:name="de.c24.hg_abstraction.ScanActivity"></activity>
+        <activity android:name="de.c24.hg_abstraction.scan.ScanActivity"></activity>
         <activity android:name=".ScaniActivity"></activity>
         <activity android:name=".PushNotificationActivity"></activity>
         <activity android:name=".MainActivity">

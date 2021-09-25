@@ -1,9 +1,8 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.notification
 
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.Constants

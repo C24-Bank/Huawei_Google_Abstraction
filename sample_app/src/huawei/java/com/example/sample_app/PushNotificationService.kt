@@ -5,7 +5,7 @@ import android.util.Log
 import com.huawei.hms.push.BaseException
 import com.huawei.hms.push.RemoteMessage
 import com.huawei.hms.push.SendException
-import de.c24.hg_abstraction.NotificationService
+import de.c24.hg_abstraction.notification.NotificationService
 
 class PushNotificationService: NotificationService() {
     val TAG = "PushDemoLog"

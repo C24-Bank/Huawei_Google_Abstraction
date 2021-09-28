@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".HuaweiPushService"
+            android:name=".PushNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />

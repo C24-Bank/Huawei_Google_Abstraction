@@ -28,7 +28,7 @@ abstract class NotificationService : HmsMessageService() {
             sound = x.sound,
             huaweiIntentUri = x.intentUri,
             huaweiNotifiyId = x.notifyId,
-            huaweiImageUrl = x.imageUrl,
+            imageUrl = x.imageUrl,
             link = x.link,
             icon = x.icon,
             color = x.color,

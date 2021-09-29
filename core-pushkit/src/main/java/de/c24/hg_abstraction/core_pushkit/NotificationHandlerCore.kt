@@ -5,9 +5,7 @@ import android.content.Context
 
 interface NotificationHandlerCore {
 
-    var tokenResult : ((String) -> Unit)?
-
-    fun getToken(context: Context, appID: String? = null)
+    fun getToken(context: Context, appID: String? = null, tokenResult: ((String?) -> Unit))
 
     fun subscribeToTopic(topic:String, context: Context)
 

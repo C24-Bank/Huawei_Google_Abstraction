@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.installations.remote.TokenResult
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.Constants
 import com.google.firebase.messaging.ktx.messaging
@@ -17,14 +18,13 @@ class NotificationHandler: NotificationHandlerCore {
         private const val TAG = "NotificationHandler"
     }
 
-    override var tokenResult: ((String) -> Unit)? = null
-
-    override fun getToken(context:Context,  appID: String?) {
+    override fun getToken(context:Context,  appID: String?, tokenResult: ((String?) -> Unit)) {
         // Get token
         // [START log_reg_token]
         Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                tokenResult(null)
                 return@OnCompleteListener
             }
 
@@ -33,7 +33,9 @@ class NotificationHandler: NotificationHandlerCore {
 
             // Check whether the token is empty.
             if (!TextUtils.isEmpty(token) && token != null) {
-                tokenResult?.invoke(token)
+                tokenResult(token)
+            }else{
+                tokenResult(null)
             }
 
             // Log and toast

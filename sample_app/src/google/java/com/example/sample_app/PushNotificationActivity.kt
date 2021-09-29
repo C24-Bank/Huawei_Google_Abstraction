@@ -17,19 +17,19 @@ class PushNotificationActivity:AppCompatActivity() {
         setContentView(R.layout.acitivity_pushnoti)
 
         getTokenbutton?.setOnClickListener {
-            pushNotificationHandler.getToken(this)
+            pushNotificationHandler.getToken(this){ tokenResult ->
+                tokenResult?.let {
+                    runOnUiThread(Runnable {
+                        run {
+                            Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+            }
         }
 
         subscribebutton?.setOnClickListener {
             pushNotificationHandler.subscribeToTopic("weather",this)
-        }
-
-        pushNotificationHandler.tokenResult = { result ->
-            runOnUiThread(Runnable {
-                run {
-                    Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
-                }
-            })
         }
     }
 }

@@ -11,7 +11,7 @@ class PushNotificationService: NotificationService() {
     val TAG = "PushDemoLog"
     val CODELABS_ACTION= "com.huawei.codelabpush.action"
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         super.onNewToken(token);
         // Obtain a token.
         Log.i(TAG, "have received refresh token:$token")
@@ -64,7 +64,7 @@ class PushNotificationService: NotificationService() {
         Log.d(TAG, "Processing now.")
     }
 
-    override fun onMessageSent(msgId: String?) {
+    override fun onMessageSent(msgId: String) {
         super.onMessageSent(msgId)
         Log.i(TAG, "onMessageSent called, Message id:$msgId")
         val intent = Intent()
@@ -74,7 +74,7 @@ class PushNotificationService: NotificationService() {
         sendBroadcast(intent)
     }
 
-    override fun onSendError(msgId: String?, exception: Exception?) {
+    override fun onSendError(msgId: String, exception: Exception) {
         super.onSendError(msgId, exception)
         Log.i(TAG, "onSendError called, message id:$msgId, ErrCode:${(exception as SendException).errorCode}, " +
                 "description:${exception.message}")
@@ -91,7 +91,7 @@ class PushNotificationService: NotificationService() {
         TODO("Not yet implemented")
     }
 
-    override fun onMessageDelivered(msgId: String?, exception: Exception?) {
+    override fun onMessageDelivered(msgId: String, exception: Exception) {
         super.onMessageDelivered(msgId, exception)
         // Obtain the error code and description.
         val errCode = (exception as BaseException).errorCode

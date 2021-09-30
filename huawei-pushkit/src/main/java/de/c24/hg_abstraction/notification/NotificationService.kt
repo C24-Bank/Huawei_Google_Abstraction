@@ -9,7 +9,7 @@ import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
 abstract class NotificationService : HmsMessageService() {
 
     @CallSuper
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         super.onNewToken(token)
     }
 
@@ -72,12 +72,12 @@ abstract class NotificationService : HmsMessageService() {
     }
 
     @CallSuper
-    override fun onMessageSent(msgId: String?) {
+    override fun onMessageSent(msgId: String) {
         super.onMessageSent(msgId)
     }
 
     @CallSuper
-    override fun onSendError(msgId: String?, exception: Exception?) {
+    override fun onSendError(msgId: String, exception: Exception) {
         super.onSendError(msgId, exception)
     }
 
@@ -87,7 +87,7 @@ abstract class NotificationService : HmsMessageService() {
     }
 
     @CallSuper
-    override fun onMessageDelivered(msgId: String?, exception: Exception?) {
+    override fun onMessageDelivered(msgId: String, exception: Exception) {
         super.onMessageDelivered(msgId, exception)
     }
 

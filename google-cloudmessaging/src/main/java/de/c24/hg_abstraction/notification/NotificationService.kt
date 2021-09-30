@@ -49,7 +49,6 @@ abstract class NotificationService: FirebaseMessagingService() {
                 titleLockArgs = x.titleLocalizationArgs,
                 bodyLockArgs = x.bodyLocalizationArgs,
                 googleVibrateTiming = x.vibrateTimings
-
             )
 
             val notificationMessage =

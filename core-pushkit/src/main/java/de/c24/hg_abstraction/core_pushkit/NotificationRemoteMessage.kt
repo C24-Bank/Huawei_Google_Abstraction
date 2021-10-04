@@ -10,9 +10,10 @@ data class NotificationRemoteMessage (
     val from: String?,
     val messageId: String?,
     val messageType: String?,
-    val notification: NotificationCore,
+    val notification: NotificationData,
     val originalPriority: Int,
     val priority: Int,
     val sentTime: Long,
     val to: String?,
-        )
+)
+

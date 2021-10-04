@@ -3,7 +3,7 @@ package de.c24.hg_abstraction.notification
 import androidx.annotation.CallSuper
 import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
-import de.c24.hg_abstraction.core_pushkit.NotificationCore
+import de.c24.hg_abstraction.core_pushkit.NotificationData
 import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
 
 abstract class NotificationService : HmsMessageService() {
@@ -13,6 +13,31 @@ abstract class NotificationService : HmsMessageService() {
         super.onNewToken(token)
     }
 
+    @CallSuper
+    override fun onMessageSent(msgId: String) {
+        super.onMessageSent(msgId)
+    }
+
+    @CallSuper
+    override fun onSendError(msgId: String, exception: Exception) {
+        super.onSendError(msgId, exception)
+    }
+
+    @CallSuper
+    override fun onTokenError(e: Exception) {
+        super.onTokenError(e)
+    }
+
+    @CallSuper
+    override fun onMessageDelivered(msgId: String, exception: Exception) {
+        super.onMessageDelivered(msgId, exception)
+    }
+
+    @CallSuper
+    override fun onDeletedMessages() {
+        super.onDeletedMessages()
+    }
+
 
     abstract fun onMessageReceived(message: NotificationRemoteMessage)
 
@@ -20,7 +45,7 @@ abstract class NotificationService : HmsMessageService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val x = message.notification
-        val notification = NotificationCore(
+        val notification = NotificationData(
             titleLockKey = x.titleLocalizationKey,
             title = x.title,
             ticker = x.ticker,
@@ -69,31 +94,6 @@ abstract class NotificationService : HmsMessageService() {
             )
         this.onMessageReceived(notificationMessage)
 
-    }
-
-    @CallSuper
-    override fun onMessageSent(msgId: String) {
-        super.onMessageSent(msgId)
-    }
-
-    @CallSuper
-    override fun onSendError(msgId: String, exception: Exception) {
-        super.onSendError(msgId, exception)
-    }
-
-    @CallSuper
-    override fun onTokenError(e: Exception) {
-        super.onTokenError(e)
-    }
-
-    @CallSuper
-    override fun onMessageDelivered(msgId: String, exception: Exception) {
-        super.onMessageDelivered(msgId, exception)
-    }
-
-    @CallSuper
-    override fun onDeletedMessages() {
-        super.onDeletedMessages()
     }
 
 }

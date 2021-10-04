@@ -1,29 +1,42 @@
 package de.c24.hg_abstraction.notification
 
-import android.app.*
-import android.content.Context
-import android.content.Intent
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
-import android.util.Log
 import androidx.annotation.CallSuper
-import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import de.c24.hg_abstraction.core_pushkit.NotificationCore
+import de.c24.hg_abstraction.core_pushkit.NotificationData
 import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
 import java.lang.Exception
 
 abstract class NotificationService: FirebaseMessagingService() {
 
+    @CallSuper
+    override fun onNewToken(p0: String){
+        super.onNewToken(p0)
+    }
+
+    @CallSuper
+    override fun onDeletedMessages(){
+        super.onDeletedMessages()
+    }
+
+    @CallSuper
+    override fun onMessageSent(p0: String){
+        super.onMessageSent(p0)
+    }
+
+    @CallSuper
+    override fun onSendError(p0: String, p1: Exception){
+        super.onSendError(p0, p1)
+    }
+
+    
     abstract fun onMessageReceived(message: NotificationRemoteMessage)
 
     @CallSuper
     override fun onMessageReceived(remoteMessage: RemoteMessage){
         super.onMessageReceived(remoteMessage)
         remoteMessage.notification?.let { x ->
-            val notification = NotificationCore(
+            val notification = NotificationData(
                 titleLockKey = x.titleLocalizationKey,
                 title = x.title,
                 ticker = x.ticker,
@@ -67,26 +80,6 @@ abstract class NotificationService: FirebaseMessagingService() {
                 )
             this.onMessageReceived(notificationMessage)
         }
-    }
-
-    @CallSuper
-    override fun onNewToken(p0: String){
-        super.onNewToken(p0)
-    }
-
-    @CallSuper
-    override fun onDeletedMessages(){
-        super.onDeletedMessages()
-    }
-
-    @CallSuper
-    override fun onMessageSent(p0: String){
-        super.onMessageSent(p0)
-    }
-
-    @CallSuper
-    override fun onSendError(p0: String, p1: Exception){
-        super.onSendError(p0, p1)
     }
 
 }

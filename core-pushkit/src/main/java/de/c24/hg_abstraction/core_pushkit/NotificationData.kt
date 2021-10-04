@@ -2,7 +2,7 @@ package de.c24.hg_abstraction.core_pushkit
 
 import android.net.Uri
 
-data class NotificationCore(
+data class NotificationData(
     val titleLockKey: String?,
     val title: String?,
     val ticker: String?,

@@ -38,7 +38,6 @@ abstract class NotificationService : HmsMessageService() {
         super.onDeletedMessages()
     }
 
-
     abstract fun onMessageReceived(message: NotificationRemoteMessage)
 
     @CallSuper

@@ -10,8 +10,6 @@ android {
     defaultConfig {
         minSdkVersion androidVersions.minSdkVersion
         targetSdkVersion androidVersions.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -27,11 +25,9 @@ android {
     productFlavors{
         huawei{
             dimension "OS"
-            versionName "1.0-huawei"
         }
         google{
             dimension "OS"
-            versionName "1.0-google"
         }
     }
     compileOptions {
@@ -53,8 +49,9 @@ dependencies {
     googleApi project(':google-mlkit')
     huaweiApi project(':huawei-scankit')
 
+    googleApi project(':google-mlkit')
+    huaweiApi project(':huawei-scankit')
     testImplementation dependenciesList.junit
 
 }
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.huawei.agconnect'

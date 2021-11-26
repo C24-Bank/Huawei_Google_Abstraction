@@ -1,9 +1,8 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.notification
 
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.Constants
@@ -18,14 +17,13 @@ class NotificationHandler: NotificationHandlerCore {
         private const val TAG = "NotificationHandler"
     }
 
-    override var tokenResult: ((String) -> Unit)? = null
-
-    override fun getToken(context:Context,  appID: String?) {
+    override fun getToken(context:Context,  appID: String?, tokenResult: ((String?) -> Unit)) {
         // Get token
         // [START log_reg_token]
-        Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
+        Firebase.messaging.token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                tokenResult(null)
                 return@OnCompleteListener
             }
 
@@ -34,7 +32,9 @@ class NotificationHandler: NotificationHandlerCore {
 
             // Check whether the token is empty.
             if (!TextUtils.isEmpty(token) && token != null) {
-                tokenResult?.invoke(token)
+                tokenResult(token)
+            }else{
+                tokenResult(null)
             }
 
             // Log and toast
@@ -80,7 +80,7 @@ class NotificationHandler: NotificationHandlerCore {
         fm.send(remoteMessage("${Constants.MessagePayloadKeys.SENDER_ID}@fcm.googleapis.com") {
             setMessageId(messageId)
 
-            dataList.forEach { (key,data)->
+            for((key,data) in dataList){
                 addData(key,data)
             }
 

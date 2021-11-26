@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import de.c24.hg_abstraction.ScanActivity
+import de.c24.hg_abstraction.scan.ScanActivity
 import de.c24.hg_abstraction.ScannerHelper
 import kotlinx.android.synthetic.main.activity_main.*
 

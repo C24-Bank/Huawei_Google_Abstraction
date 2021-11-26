@@ -3,7 +3,7 @@ package com.example.sample_app
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.c24.hg_abstraction.NotificationHandler
+import de.c24.hg_abstraction.notification.NotificationHandler
 import kotlinx.android.synthetic.main.acitivity_pushnoti.*
 
 class PushNotificationActivity : AppCompatActivity() {
@@ -13,7 +13,15 @@ class PushNotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acitivity_pushnoti)
-        pushNotificationHandler.getToken(this,"104610749")
+        pushNotificationHandler.getToken(this,"104610749"){ tokenResult ->
+            tokenResult?.let {
+                runOnUiThread(Runnable {
+                    run {
+                        Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        }
 
 
         getTokenbutton?.setOnClickListener {
@@ -22,14 +30,6 @@ class PushNotificationActivity : AppCompatActivity() {
 
         subscribebutton?.setOnClickListener {
             pushNotificationHandler.subscribeToTopic("weather",this)
-        }
-
-        pushNotificationHandler.tokenResult = { result ->
-            runOnUiThread(Runnable {
-                run {
-                    Toast.makeText(this,result, Toast.LENGTH_SHORT).show()
-                }
-            })
         }
     }
 }

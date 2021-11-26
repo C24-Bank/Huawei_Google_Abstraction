@@ -2,6 +2,7 @@ package de.c24.hg_abstraction
 
 import android.app.Activity
 import android.content.Intent
+import de.c24.hg_abstraction.scan.ScanActivity
 
 
 class ScannerHelper {

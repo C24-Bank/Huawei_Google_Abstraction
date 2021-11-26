@@ -3,15 +3,15 @@ package com.example.sample_app
 import android.content.Intent
 import android.util.Log
 import com.huawei.hms.push.BaseException
-import com.huawei.hms.push.RemoteMessage
 import com.huawei.hms.push.SendException
-import de.c24.hg_abstraction.NotificationService
+import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
+import de.c24.hg_abstraction.notification.NotificationService
 
 class PushNotificationService: NotificationService() {
     val TAG = "PushDemoLog"
     val CODELABS_ACTION= "com.huawei.codelabpush.action"
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         super.onNewToken(token);
         // Obtain a token.
         Log.i(TAG, "have received refresh token:$token")
@@ -26,8 +26,7 @@ class PushNotificationService: NotificationService() {
         Log.i(TAG, "sending token to server. token:$token")
     }
 
-    override fun onMessageReceived(message: RemoteMessage?)  {
-        super.onMessageReceived(message)
+    override fun onMessageReceived(message: NotificationRemoteMessage)  {
         Log.i(TAG, "onMessageReceived is called")
 
         // Check whether the message is empty.
@@ -38,15 +37,15 @@ class PushNotificationService: NotificationService() {
         }
 
         // Obtain the message content.
-        Log.i(TAG, """getData: ${message.data}        
+        Log.i(TAG, """getData: ${message.huaweiData}        
             getFrom: ${message.from}        
             getTo: ${message.to}        
             getMessageId: ${message.messageId}
             getSendTime: ${message.sentTime}           
-            getDataMap: ${message.dataOfMap}
+            getDataMap: ${message.data}
             getMessageType: ${message.messageType}   
             getTtl: ${message.ttl}        
-            getToken: ${message.token}""".trimIndent())
+            getToken: ${message.huaweiToken}""".trimIndent())
 
         val judgeWhetherIn10s = false
         // If the message is not processed within 10 seconds, create a job to process it.
@@ -58,14 +57,14 @@ class PushNotificationService: NotificationService() {
         }
     }
 
-    private fun startWorkManagerJob(message: RemoteMessage?) {
+    private fun startWorkManagerJob(message: NotificationRemoteMessage?) {
         Log.d(TAG, "Start new Job processing.")
     }
-    private fun processWithin10s(message: RemoteMessage?) {
+    private fun processWithin10s(message: NotificationRemoteMessage?) {
         Log.d(TAG, "Processing now.")
     }
 
-    override fun onMessageSent(msgId: String?) {
+    override fun onMessageSent(msgId: String) {
         super.onMessageSent(msgId)
         Log.i(TAG, "onMessageSent called, Message id:$msgId")
         val intent = Intent()
@@ -75,7 +74,7 @@ class PushNotificationService: NotificationService() {
         sendBroadcast(intent)
     }
 
-    override fun onSendError(msgId: String?, exception: Exception?) {
+    override fun onSendError(msgId: String, exception: Exception) {
         super.onSendError(msgId, exception)
         Log.i(TAG, "onSendError called, message id:$msgId, ErrCode:${(exception as SendException).errorCode}, " +
                 "description:${exception.message}")
@@ -92,7 +91,7 @@ class PushNotificationService: NotificationService() {
         TODO("Not yet implemented")
     }
 
-    override fun onMessageDelivered(msgId: String?, exception: Exception?) {
+    override fun onMessageDelivered(msgId: String, exception: Exception) {
         super.onMessageDelivered(msgId, exception)
         // Obtain the error code and description.
         val errCode = (exception as BaseException).errorCode

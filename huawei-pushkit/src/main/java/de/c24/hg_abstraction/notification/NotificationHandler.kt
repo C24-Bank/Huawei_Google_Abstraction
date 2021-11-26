@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.notification
 
 import android.content.Context
 import android.text.TextUtils
@@ -16,9 +16,7 @@ class NotificationHandler: NotificationHandlerCore {
         private const val TAG = "NotificationHandler"
     }
 
-    override var tokenResult: ((String) -> Unit)? = null
-
-     override fun getToken(context: Context, appID: String?) {
+     override fun getToken(context: Context, appID: String?, tokenResult: ((String?) -> Unit)) {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -31,10 +29,13 @@ class NotificationHandler: NotificationHandlerCore {
 
                     // Check whether the token is empty.
                     if (!TextUtils.isEmpty(token)) {
-                        tokenResult?.invoke(token)
+                        tokenResult(token)
+                    }else{
+                        tokenResult(null)
                     }
                 } catch (e: ApiException) {
                     Log.e(TAG, "get token failed, $e")
+                    tokenResult(null)
                 }
             }
         }.start()
@@ -113,9 +114,11 @@ class NotificationHandler: NotificationHandlerCore {
         val remoteMessage = RemoteMessage.Builder("push.hcm.upstream")
             .setMessageId(messageId)
             .apply {
-                dataList.forEach { (key,data)->
+
+                for((key,data) in dataList){
                     addData(key,data)
                 }
+
             }
             .build()
         try {

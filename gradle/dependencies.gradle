@@ -29,7 +29,7 @@ ext {
             gmsBarcodeScanning         : "16.2.0",
             firebaseBarcodeScanning    : "16.2.0",
 
-            huaweiAgconnect            : "1.5.2.300",
+            huaweiAgconnect            : "1.6.1.300",
             huaweiPush                 : "6.1.0.300",
             huaweiScan                 : "2.0.0.300",
 

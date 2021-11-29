@@ -35,7 +35,7 @@ ext {
 
 
             //test
-            junit                      : "5.8.1",
+            junit                      : "4.13.2",
             androidXJunit              : "1.1.3"
     ]
 

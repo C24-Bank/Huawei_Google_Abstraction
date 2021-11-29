@@ -49,8 +49,6 @@ dependencies {
     googleApi project(':google-mlkit')
     huaweiApi project(':huawei-scankit')
 
-    googleApi project(':google-mlkit')
-    huaweiApi project(':huawei-scankit')
     testImplementation dependenciesList.junit
 
 }

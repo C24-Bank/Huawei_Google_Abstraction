@@ -48,8 +48,11 @@ apply plugin: 'maven-publish' // Apply this plugin at the top of your library bu
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
+def versionProperties = new Properties()
+versionProperties.load(new FileInputStream(rootProject.file("version.properties")))
+
 def getVersionName = { ->
-    return "1.0.7" // Replace with version Name
+    return "${versionProperties.getProperty("pushKitVersion", "0.0.1")}"
 }
 
 def getArtificatId = { ->

@@ -43,7 +43,6 @@ dependencies {
     implementation dependenciesList.constraintLayout
 
 
-    implementation dependenciesList.gmsBarcodeScanning
     implementation dependenciesList.firebaseBarcodeScanning
     implementation project(':core-scan')
 

@@ -1,6 +1,7 @@
 package com.example.sample_app
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -151,7 +152,7 @@ class DefinedActivity: AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
-
+    @SuppressLint("UnsafeOptInUsageError")
     private class YourImageAnalyzer(
         context: Context,
         barcodeScanner: BarcodeScanner,

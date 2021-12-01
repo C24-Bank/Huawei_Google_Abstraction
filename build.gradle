@@ -1,4 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    ext.versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(rootProject.file("version.properties")))
+
+    ext.mavenGroupId = "com.github.C24-Bank.Huawei_Google_Abstraction"
+}
+
 buildscript {
     apply from: "./gradle/dependencies.gradle"
     repositories {

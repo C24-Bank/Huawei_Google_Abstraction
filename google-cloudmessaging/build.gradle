@@ -50,6 +50,8 @@ dependencies {
 
 }
 
+apply plugin: 'maven-publish'
+
 def getVersionName = { ->
     return "${versionProperties.getProperty("cloudMessagingVersion", "0.0.1")}"
 }

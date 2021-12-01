@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'maven-publish'
 }
 
 android {
@@ -40,6 +39,8 @@ dependencies {
 
     testImplementation dependenciesList.junit
 }
+
+apply plugin: 'maven-publish'
 
 def getVersionName = { ->
     return "${versionProperties.getProperty("coreScanVersion", "0.0.1")}"

@@ -37,9 +37,8 @@ class NotificationHandler: NotificationHandlerCore {
                 tokenResult(null)
             }
 
-            // Log and toast
-            val msg = "Token created: $token"
-            Log.d(TAG, msg)
+            // Log
+            Log.d(TAG, "Token created")
         })
         // [END log_reg_token]
     }

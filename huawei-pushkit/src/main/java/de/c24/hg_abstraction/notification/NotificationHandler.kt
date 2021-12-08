@@ -25,7 +25,7 @@ class NotificationHandler: NotificationHandlerCore {
                     // Set tokenScope to HCM.
                     val tokenScope = "HCM"
                     val token = HmsInstanceId.getInstance(context).getToken(appID, tokenScope)
-                    Log.i(TAG, "get token:$token")
+                    Log.d(TAG, "Token created")
 
                     // Check whether the token is empty.
                     if (!TextUtils.isEmpty(token)) {

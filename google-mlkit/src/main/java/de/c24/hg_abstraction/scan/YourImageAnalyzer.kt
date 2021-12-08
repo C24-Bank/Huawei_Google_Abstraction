@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.scan
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -12,6 +12,7 @@ class YourImageAnalyzer(
 ) : ImageAnalysis.Analyzer {
     val barCodeScanner = barcodeScanner
 
+    @androidx.camera.core.ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
         imageProxy.image?.let { inputImage ->
             val processingImage = InputImage.fromMediaImage(

@@ -5,8 +5,6 @@ include ':core-scan'
 include ':huawei-scankit'
 include ':sample_app'
 include ':google-mlkit'
-include ':huawei-mlkit'
 include ':core-services'
-include ':Huawei_Google_Abstraction_Library'
 include ':app'
 rootProject.name = "Huawei_Google_Abstraction"

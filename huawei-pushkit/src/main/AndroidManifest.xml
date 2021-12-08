@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.c24.hg_abstraction">
+    package="de.c24.hg_abstraction.notification">
+
+    <queries>
+        <intent>
+            <action android:name="com.huawei.hms.core.aidlservice" />
+        </intent>
+    </queries>
+
+    <application>
+        <receiver
+            android:name="com.huawei.hms.support.api.push.PushMsgReceiver"
+            android:directBootAware="true"
+            android:exported="true"
+            android:permission="${applicationId}.permission.PROCESS_PUSH_MSG">
+            <intent-filter>
+
+                <!-- Mandatory, be used to receive notification bar message click event. -->
+                <action android:name="com.huawei.intent.action.PUSH_DELAY_NOTIFY" />
+                <!-- Optional, compatible with old huawei phones. -->
+                <action android:name="com.huawei.intent.action.PUSH" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.huawei.hms.support.api.push.PushReceiver"
+            android:directBootAware="true"
+            android:exported="true"
+            android:permission="${applicationId}.permission.PROCESS_PUSH_MSG">
+            <intent-filter>
+
+                <!-- Mandatory, be used to receive tokens. -->
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
+                <!-- Mandatory, be used to receive messages. -->
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>

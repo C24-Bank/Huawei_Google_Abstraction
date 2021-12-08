@@ -1,16 +1,13 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.scan
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.app.ActivityCompat
 import com.huawei.hms.hmsscankit.RemoteView
 import com.huawei.hms.ml.scan.HmsScan
 

@@ -1,0 +1,72 @@
+ext {
+    androidVersions = [
+            minSdkVersion    : 23,
+            targetSdkVersion : 31,
+            compileSdkVersion: 31,
+            gradlePlugin     : "7.0.3",
+            buildTools       : "31.0.0"
+    ]
+
+    versions = [
+            huaweiPlugin               : "1.5.2.300",
+            kotlin                     : "1.5.31",
+            googleServices             : "4.3.10",
+
+            androidLifecycle           : "1.0.0",
+            androidLifecycleRuntime    : "2.4.0",
+
+            androidXcore               : "1.7.0",
+            androidXAppcompat          : "1.3.1",
+            androidXCamera             : "1.0.1",
+            androidXCameraView         : "1.0.0-alpha24",
+            material                   : "1.4.0",
+
+            constraintLayout           : "2.1.1",
+
+            firebaseBom                : "28.3.0",
+            firebaseMessagingDirectBoot: "20.2.0",
+
+            firebaseBarcodeScanning    : "16.2.1",
+
+            huaweiAgconnect            : "1.5.2.300",
+            huaweiPush                 : "5.1.1.301",
+            huaweiScan                 : "2.0.0.300",
+
+
+            //test
+            junit                      : "4.13.2",
+            androidXJunit              : "1.1.3"
+    ]
+
+    dependenciesList = [
+            kotlin                     : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+
+            androidXcore               : "androidx.core:core-ktx:${versions.androidXcore}",
+            androidXAppcompat          : "androidx.appcompat:appcompat:${versions.androidXAppcompat}",
+            androidXCamera2            : "androidx.camera:camera-camera2:${versions.androidXCamera}",
+            androidXCameraLifecycle    : "androidx.camera:camera-lifecycle:${versions.androidXCamera}",
+            androidXCameraView         : "androidx.camera:camera-view:${versions.androidXCameraView}",
+
+            androidLifecycle           : "android.arch.lifecycle:extensions:${versions.androidLifecycle}",
+            androidLifecycleRuntime    : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.androidLifecycleRuntime}",
+
+            material                   : "com.google.android.material:material:${versions.material}",
+            constraintLayout           : "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}",
+
+            firebaseBom                : "com.google.firebase:firebase-bom:${versions.firebaseBom}",
+            firebaseMessaging          : "com.google.firebase:firebase-messaging-ktx",
+            firebaseMessagingDirectBoot: "com.google.firebase:firebase-messaging-directboot:${versions.firebaseMessagingDirectBoot}",
+            firebaseBarcodeScanning    : "com.google.android.gms:play-services-mlkit-barcode-scanning:${versions.firebaseBarcodeScanning}",
+
+            huaweiAgconnect            : "com.huawei.agconnect:agconnect-core:${versions.huaweiAgconnect}",
+            huaweiPush                 : "com.huawei.hms:push:${versions.huaweiPush}",
+            huaweiScan                 : "com.huawei.hms:scan:${versions.huaweiScan}",
+
+            gmsBarcodeScanning         : "com.google.android.gms:play-services-mlkit-barcode-scanning:${versions.gmsBarcodeScanning}",
+
+            // test
+            junit                      : "junit:junit:${versions.junit}",
+
+
+    ]
+}

@@ -1,4 +1,4 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.scan
 
 import android.app.Activity
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.huawei.hms.hmsscankit.RemoteView
 import com.huawei.hms.ml.scan.HmsScan
 import de.c24.hg_abstraction.core_scan.ScanViewCore
-import de.c24.hg_abstraction.databinding.ScanViewBinding
+import de.c24.hg_abstraction.scan.databinding.ScanViewBinding
 
 class ScanView@JvmOverloads constructor(
     context: Context,
@@ -60,7 +60,7 @@ class ScanView@JvmOverloads constructor(
         val density = dm.density
         val mScreenWidth=dm.widthPixels
         val mScreenHeight=dm.heightPixels
-        val scanFrameSize=(SCAN_FRAME_SIZE*density)
+        val scanFrameSize=(SCAN_FRAME_SIZE *density)
         //3.caculate viewfinder's rect,it's in the middle of the layout
         //set scanning area(Optional, rect can be null,
         // If not configure,default is in the center of layout)

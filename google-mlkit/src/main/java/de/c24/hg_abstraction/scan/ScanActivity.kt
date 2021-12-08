@@ -1,12 +1,10 @@
-package de.c24.hg_abstraction
+package de.c24.hg_abstraction.scan
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -16,7 +14,6 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.activity_scan.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -100,7 +97,7 @@ class ScanActivity: AppCompatActivity() {
                 val intent = Intent()
                 intent.apply {
                     putExtra(SCAN_RESULT, qrToken) }
-                setResult(Activity.RESULT_OK, intent)
+                setResult(RESULT_OK, intent)
                 this.finish()
 
             }

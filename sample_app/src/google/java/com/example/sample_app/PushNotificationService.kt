@@ -9,16 +9,16 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
-import de.c24.hg_abstraction.NotificationService
+import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
+import de.c24.hg_abstraction.notification.NotificationService
 import java.lang.Exception
 
-class PushNotificationService :NotificationService(){
+class PushNotificationService : NotificationService(){
 
      var notificationChanelId = "de.c24.hg_abstraction.notification"
      var notificationId = "100"
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        super.onMessageReceived(remoteMessage)
+    override fun onMessageReceived(remoteMessage: NotificationRemoteMessage) {
 
         Log.e("message","Message Received ...");
 

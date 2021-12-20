@@ -7,35 +7,35 @@ import de.c24.hg_abstraction.core_pushkit.NotificationData
 import de.c24.hg_abstraction.core_pushkit.NotificationRemoteMessage
 import java.lang.Exception
 
-abstract class NotificationService: FirebaseMessagingService() {
+abstract class NotificationService : FirebaseMessagingService() {
 
     @CallSuper
-    override fun onNewToken(p0: String){
+    override fun onNewToken(p0: String) {
         super.onNewToken(p0)
     }
 
     @CallSuper
-    override fun onDeletedMessages(){
+    override fun onDeletedMessages() {
         super.onDeletedMessages()
     }
 
     @CallSuper
-    override fun onMessageSent(p0: String){
+    override fun onMessageSent(p0: String) {
         super.onMessageSent(p0)
     }
 
     @CallSuper
-    override fun onSendError(p0: String, p1: Exception){
+    override fun onSendError(p0: String, p1: Exception) {
         super.onSendError(p0, p1)
     }
 
     abstract fun onMessageReceived(message: NotificationRemoteMessage)
 
     @CallSuper
-    override fun onMessageReceived(remoteMessage: RemoteMessage){
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        remoteMessage.notification?.let { x ->
-            val notification = NotificationData(
+        val notification: NotificationData? = remoteMessage.notification?.let { x ->
+            NotificationData(
                 titleLockKey = x.titleLocalizationKey,
                 title = x.title,
                 ticker = x.ticker,
@@ -62,23 +62,22 @@ abstract class NotificationService: FirebaseMessagingService() {
                 bodyLockArgs = x.bodyLocalizationArgs,
                 googleVibrateTiming = x.vibrateTimings
             )
-
-            val notificationMessage =
-                NotificationRemoteMessage(
-                    collapseKey = remoteMessage.collapseKey,
-                    data = remoteMessage.data,
-                    ttl = remoteMessage.ttl,
-                    from = remoteMessage.from,
-                    messageId = remoteMessage.messageId,
-                    messageType = remoteMessage.messageType,
-                    notification = notification,
-                    originalPriority = remoteMessage.originalPriority,
-                    priority = remoteMessage.priority,
-                    sentTime = remoteMessage.sentTime,
-                    to = remoteMessage.to
-                )
-            this.onMessageReceived(notificationMessage)
         }
-    }
 
+        val notificationMessage =
+            NotificationRemoteMessage(
+                collapseKey = remoteMessage.collapseKey,
+                data = remoteMessage.data,
+                ttl = remoteMessage.ttl,
+                from = remoteMessage.from,
+                messageId = remoteMessage.messageId,
+                messageType = remoteMessage.messageType,
+                notification = notification,
+                originalPriority = remoteMessage.originalPriority,
+                priority = remoteMessage.priority,
+                sentTime = remoteMessage.sentTime,
+                to = remoteMessage.to
+            )
+        this.onMessageReceived(notificationMessage)
+    }
 }

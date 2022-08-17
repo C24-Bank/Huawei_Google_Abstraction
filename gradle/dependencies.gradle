@@ -3,7 +3,7 @@ ext {
             minSdkVersion    : 23,
             targetSdkVersion : 31,
             compileSdkVersion: 31,
-            gradlePlugin     : "7.0.3",
+            gradlePlugin     : "7.2.2",
             buildTools       : "31.0.0"
     ]
 
@@ -16,17 +16,19 @@ ext {
             androidLifecycleRuntime    : "2.4.0",
 
             androidXcore               : "1.7.0",
-            androidXAppcompat          : "1.3.1",
-            androidXCamera             : "1.0.1",
-            androidXCameraView         : "1.0.0-alpha24",
-            material                   : "1.4.0",
+            androidXAppcompat          : "1.4.0",
+            androidXCamera             : "1.0.2",
+            androidXCameraView         : "1.0.0-alpha32",
+            material                   : "1.5.0",
 
-            constraintLayout           : "2.1.1",
+            constraintLayout           : "2.1.2",
 
             firebaseBom                : "28.3.0",
-            firebaseMessagingDirectBoot: "20.2.0",
+            firebaseMessagingDirectBoot: "23.0.0",
 
-            firebaseBarcodeScanning    : "16.2.1",
+            firebaseBarcodeScanning    : "18.0.0",
+
+            gmsBarcodeScanning         : "18.0.0",
 
             huaweiAgconnect            : "1.5.2.300",
             huaweiPush                 : "5.1.1.301",

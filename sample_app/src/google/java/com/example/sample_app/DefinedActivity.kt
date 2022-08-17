@@ -16,17 +16,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.google.activity_scan.*
-import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class DefinedActivity: AppCompatActivity() {
+class DefinedActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "CameraXBasic"
@@ -35,10 +34,9 @@ class DefinedActivity: AppCompatActivity() {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
-    private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +50,7 @@ class DefinedActivity: AppCompatActivity() {
         requestCameraPermission(this)
     }
 
-    private fun requestCameraPermission(context: Context){
+    private fun requestCameraPermission(context: Context) {
         val cameraPermissionResult = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.CAMERA
@@ -80,12 +78,12 @@ class DefinedActivity: AppCompatActivity() {
 
     }
 
-    private fun bindPreview(cameraProvider : ProcessCameraProvider) {
+    private fun bindPreview(cameraProvider: ProcessCameraProvider) {
 
-        var preview : Preview = Preview.Builder()
+        var preview: Preview = Preview.Builder()
             .build()
 
-        var cameraSelector : CameraSelector = CameraSelector.Builder()
+        var cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
@@ -93,12 +91,18 @@ class DefinedActivity: AppCompatActivity() {
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
 
-        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
+        cameraProvider.bindToLifecycle(
+            this as LifecycleOwner,
+            cameraSelector,
+            preview,
+            setupAnalyzer()
+        )
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun initBarCodeScanner() {
@@ -115,9 +119,9 @@ class DefinedActivity: AppCompatActivity() {
             .setImageQueueDepth(30)
             .build()
 
-        val qrCodeAnalyzer = YourImageAnalyzer(this,barcodeScanner) { qrCodes ->
+        val qrCodeAnalyzer = YourImageAnalyzer(this, barcodeScanner) { qrCodes ->
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
-                Toast.makeText(this,qrToken,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, qrToken, Toast.LENGTH_SHORT).show()
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
 
@@ -133,15 +137,18 @@ class DefinedActivity: AppCompatActivity() {
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray) {
+        IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(this,
+                Toast.makeText(
+                    this,
                     "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }

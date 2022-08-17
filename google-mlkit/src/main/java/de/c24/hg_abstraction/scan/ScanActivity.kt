@@ -10,22 +10,22 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.android.synthetic.main.activity_scan.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ScanActivity: AppCompatActivity() {
+class ScanActivity : AppCompatActivity() {
 
     companion object {
         //declare the key ,used to get the result value returned
         val SCAN_RESULT = "scanResult"
     }
 
-    private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
 
@@ -66,12 +66,12 @@ class ScanActivity: AppCompatActivity() {
 
     }
 
-    private fun bindPreview(cameraProvider : ProcessCameraProvider) {
+    private fun bindPreview(cameraProvider: ProcessCameraProvider) {
 
-        var preview : Preview = Preview.Builder()
+        var preview: Preview = Preview.Builder()
             .build()
 
-        var cameraSelector : CameraSelector = CameraSelector.Builder()
+        var cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
@@ -95,8 +95,7 @@ class ScanActivity: AppCompatActivity() {
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
                 val intent = Intent()
-                intent.apply {
-                    putExtra(SCAN_RESULT, qrToken) }
+                intent.putExtra(SCAN_RESULT, qrToken)
                 setResult(RESULT_OK, intent)
                 this.finish()
 

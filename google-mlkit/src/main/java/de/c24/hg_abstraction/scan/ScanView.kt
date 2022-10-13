@@ -2,11 +2,14 @@ package de.c24.hg_abstraction.scan
 
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
+import androidx.camera.core.*
+import androidx.camera.core.FocusMeteringAction.FLAG_AF
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -21,6 +24,7 @@ import de.c24.hg_abstraction.scan.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class ScanView@JvmOverloads constructor(
     context: Context,
@@ -54,12 +58,14 @@ class ScanView@JvmOverloads constructor(
 
     }
 
+    @androidx.camera.camera2.interop.ExperimentalCamera2Interop
+    @androidx.camera.lifecycle.ExperimentalCameraProviderConfiguration
     private fun bindPreview(activity: Activity,cameraProvider : ProcessCameraProvider) {
 
-        var preview : Preview = Preview.Builder()
+        var preview: Preview = Preview.Builder()
             .build()
 
-        var cameraSelector : CameraSelector = CameraSelector.Builder()
+        var cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
@@ -67,8 +73,34 @@ class ScanView@JvmOverloads constructor(
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
 
-        cameraProvider.bindToLifecycle(activity as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
+        val camera = cameraProvider.bindToLifecycle(
+            activity as LifecycleOwner,
+            cameraSelector,
+            preview,
+            setupAnalyzer()
+        )
+
+        val mainHandler = Handler(Looper.getMainLooper())
+
+        mainHandler.post(object : Runnable {
+            override fun run() {
+                focusCamera(camera)
+                mainHandler.postDelayed(this, 3000)
+            }
+        })
     }
+
+    private fun focusCamera(camera: Camera) {
+        val autoFocusPoint = SurfaceOrientedMeteringPointFactory(1f, 1f)
+            .createPoint(.5f, .5f)
+        val autoFocusAction = FocusMeteringAction.Builder(
+            autoFocusPoint, FLAG_AF
+        )
+            .disableAutoCancel()
+            .build()
+        camera.cameraControl.startFocusAndMetering(autoFocusAction)
+    }
+
 
     private fun initBarCodeScanner() {
         val options = BarcodeScannerOptions.Builder()
@@ -86,6 +118,7 @@ class ScanView@JvmOverloads constructor(
 
         val qrCodeAnalyzer = YourImageAnalyzer(barcodeScanner) { qrCodes ->
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
+                Log.d("QR-code",qrToken)
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
                 resultListener?.invoke(qrToken)

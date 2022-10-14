@@ -2,11 +2,7 @@ package de.c24.hg_abstraction.scan
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.camera.core.*
 import androidx.camera.core.FocusMeteringAction.FLAG_AF
@@ -22,6 +18,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import de.c24.hg_abstraction.core_scan.ScanViewCore
 import de.c24.hg_abstraction.scan.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.view.*
+import kotlinx.android.synthetic.main.scan_view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -44,6 +41,7 @@ class ScanView@JvmOverloads constructor(
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
 
+    private val AUTO_FOCUS_RETRY_TO_MILLIS = 3000L
 
      override fun startCamera(activity: Activity) {
          initBarCodeScanner()
@@ -80,14 +78,13 @@ class ScanView@JvmOverloads constructor(
             setupAnalyzer()
         )
 
-        val mainHandler = Handler(Looper.getMainLooper())
-
-        mainHandler.post(object : Runnable {
+        val view = activity.previewview
+        view.postDelayed(object : Runnable {
             override fun run() {
                 focusCamera(camera)
-                mainHandler.postDelayed(this, 3000)
+                view.postDelayed(this, AUTO_FOCUS_RETRY_TO_MILLIS)
             }
-        })
+        }, AUTO_FOCUS_RETRY_TO_MILLIS)
     }
 
     private fun focusCamera(camera: Camera) {
@@ -118,7 +115,6 @@ class ScanView@JvmOverloads constructor(
 
         val qrCodeAnalyzer = YourImageAnalyzer(barcodeScanner) { qrCodes ->
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
-                Log.d("QR-code",qrToken)
                 cameraExecutor?.shutdown()
                 cameraProviderFuture?.get()?.unbindAll()
                 resultListener?.invoke(qrToken)

@@ -4,9 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
+import androidx.camera.core.*
+import androidx.camera.core.FocusMeteringAction.FLAG_AF
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -19,8 +18,10 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import de.c24.hg_abstraction.core_scan.ScanViewCore
 import de.c24.hg_abstraction.scan.databinding.ScanViewBinding
 import kotlinx.android.synthetic.main.activity_scan.view.*
+import kotlinx.android.synthetic.main.scan_view.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class ScanView@JvmOverloads constructor(
     context: Context,
@@ -40,6 +41,7 @@ class ScanView@JvmOverloads constructor(
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
 
+    private val AUTO_FOCUS_RETRY_TO_MILLIS = 3000L
 
      override fun startCamera(activity: Activity) {
          initBarCodeScanner()
@@ -54,12 +56,14 @@ class ScanView@JvmOverloads constructor(
 
     }
 
+    @androidx.camera.camera2.interop.ExperimentalCamera2Interop
+    @androidx.camera.lifecycle.ExperimentalCameraProviderConfiguration
     private fun bindPreview(activity: Activity,cameraProvider : ProcessCameraProvider) {
 
-        var preview : Preview = Preview.Builder()
+        var preview: Preview = Preview.Builder()
             .build()
 
-        var cameraSelector : CameraSelector = CameraSelector.Builder()
+        var cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
@@ -67,8 +71,33 @@ class ScanView@JvmOverloads constructor(
 
         preview.setSurfaceProvider(previewview.surfaceProvider)
 
-        cameraProvider.bindToLifecycle(activity as LifecycleOwner, cameraSelector, preview, setupAnalyzer())
+        val camera = cameraProvider.bindToLifecycle(
+            activity as LifecycleOwner,
+            cameraSelector,
+            preview,
+            setupAnalyzer()
+        )
+
+        val view = activity.previewview
+        view.postDelayed(object : Runnable {
+            override fun run() {
+                focusCamera(camera)
+                view.postDelayed(this, AUTO_FOCUS_RETRY_TO_MILLIS)
+            }
+        }, AUTO_FOCUS_RETRY_TO_MILLIS)
     }
+
+    private fun focusCamera(camera: Camera) {
+        val autoFocusPoint = SurfaceOrientedMeteringPointFactory(1f, 1f)
+            .createPoint(.5f, .5f)
+        val autoFocusAction = FocusMeteringAction.Builder(
+            autoFocusPoint, FLAG_AF
+        )
+            .disableAutoCancel()
+            .build()
+        camera.cameraControl.startFocusAndMetering(autoFocusAction)
+    }
+
 
     private fun initBarCodeScanner() {
         val options = BarcodeScannerOptions.Builder()

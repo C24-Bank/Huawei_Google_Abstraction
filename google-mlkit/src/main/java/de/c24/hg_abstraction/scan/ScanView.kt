@@ -1,5 +1,6 @@
 package de.c24.hg_abstraction.scan
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
@@ -23,7 +24,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-class ScanView@JvmOverloads constructor(
+class ScanView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -37,33 +38,34 @@ class ScanView@JvmOverloads constructor(
 
     override var resultListener: ((String) -> Unit)? = null
 
-    private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
 
     private val AUTO_FOCUS_RETRY_TO_MILLIS = 3000L
 
-     override fun startCamera(activity: Activity) {
-         initBarCodeScanner()
+    @SuppressLint("UnsafeOptInUsageError")
+    override fun startCamera(activity: Activity) {
+        initBarCodeScanner()
         cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
 
             val cameraProvider = cameraProviderFuture.get()
-            bindPreview(activity,cameraProvider)
+            bindPreview(activity, cameraProvider)
         }, ContextCompat.getMainExecutor(context))
 
     }
 
     @androidx.camera.camera2.interop.ExperimentalCamera2Interop
     @androidx.camera.lifecycle.ExperimentalCameraProviderConfiguration
-    private fun bindPreview(activity: Activity,cameraProvider : ProcessCameraProvider) {
+    private fun bindPreview(activity: Activity, cameraProvider: ProcessCameraProvider) {
 
-        var preview: Preview = Preview.Builder()
+        val preview: Preview = Preview.Builder()
             .build()
 
-        var cameraSelector: CameraSelector = CameraSelector.Builder()
+        val cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
@@ -79,12 +81,14 @@ class ScanView@JvmOverloads constructor(
         )
 
         val view = activity.previewview
-        view.postDelayed(object : Runnable {
-            override fun run() {
-                focusCamera(camera)
-                view.postDelayed(this, AUTO_FOCUS_RETRY_TO_MILLIS)
-            }
-        }, AUTO_FOCUS_RETRY_TO_MILLIS)
+        view?.let { previewView ->
+            previewView.postDelayed(object : Runnable {
+                override fun run() {
+                    focusCamera(camera)
+                    previewView.postDelayed(this, AUTO_FOCUS_RETRY_TO_MILLIS)
+                }
+            }, AUTO_FOCUS_RETRY_TO_MILLIS)
+        }
     }
 
     private fun focusCamera(camera: Camera) {
@@ -115,21 +119,21 @@ class ScanView@JvmOverloads constructor(
 
         val qrCodeAnalyzer = YourImageAnalyzer(barcodeScanner) { qrCodes ->
             qrCodes.firstOrNull()?.rawValue?.let { qrToken ->
-                cameraExecutor?.shutdown()
-                cameraProviderFuture?.get()?.unbindAll()
+                cameraExecutor.shutdown()
+                cameraProviderFuture.get()?.unbindAll()
                 resultListener?.invoke(qrToken)
 
             }
         }
 
-        cameraExecutor?.let {
+        cameraExecutor.let {
             imageAnalysis.setAnalyzer(it, qrCodeAnalyzer)
         }
 
         return imageAnalysis
     }
 
-     override fun destroyView() {
+    override fun destroyView() {
         cameraExecutor.shutdown()
-     }
+    }
 }
